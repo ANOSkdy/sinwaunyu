@@ -1,6 +1,8 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getNewsBySlug, getAttachmentUrl } from "@/lib/airtable";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type NewsDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -62,10 +64,12 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
         {/* 本文 */}
         <article className="rounded-xl bg-white p-6 shadow-sm">
-          <div className="prose max-w-none text-sm leading-relaxed text-slate-800 prose-p:mb-3 prose-ul:my-3 prose-li:my-1 prose-li:marker:text-slate-400">
-            {/* Airtable の長文テキストを改行維持で表示 */}
-            <p className="whitespace-pre-line">{body}</p>
-          </div>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            className="prose max-w-none text-sm leading-relaxed text-slate-800 prose-p:mb-3 prose-ul:my-3 prose-li:my-1 prose-li:marker:text-slate-400"
+          >
+            {body}
+          </ReactMarkdown>
         </article>
       </div>
     </div>

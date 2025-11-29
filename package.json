@@ -11,7 +11,9 @@
   "dependencies": {
     "next": "16.0.5",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-markdown": "file:vendor/react-markdown",
+    "remark-gfm": "file:vendor/remark-gfm"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
