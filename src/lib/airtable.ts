@@ -17,6 +17,7 @@ const TABLE_CONTACT = process.env.AIRTABLE_TABLE_CONTACT ?? "contact";
 
 type AirtableListResponse<T> = {
   records: AirtableRecord<T>[];
+  offset?: string;
 };
 
 export type AirtableRecord<T> = {
@@ -124,8 +125,29 @@ export type NewsFields = {
   meta_description?: string;
 };
 
+async function fetchAllRecords<T>(
+  tableName: string,
+  params: Record<string, string>
+) {
+  const allRecords: AirtableRecord<T>[] = [];
+  let offset: string | undefined;
+
+  do {
+    const pageParams = offset ? { ...params, offset } : params;
+    const data = await airtableFetch<AirtableListResponse<T>>(
+      tableName,
+      pageParams
+    );
+
+    allRecords.push(...data.records);
+    offset = data.offset;
+  } while (offset);
+
+  return allRecords;
+}
+
 /** TOP などで使う最新ニュース */
-export async function getLatestNews(limit = 3) {
+export async function getLatestNews(limit = 5) {
   const pageSize = Math.min(Math.max(limit, 1), 100);
   const params: Record<string, string> = {
     pageSize: String(pageSize),
@@ -142,25 +164,26 @@ export async function getLatestNews(limit = 3) {
 }
 
 /** 一覧ページ用：公開中ニュースを全件取得 */
-export async function getAllNews(limit = 100) {
-  const pageSize = Math.min(Math.max(limit, 1), 100);
+export async function getAllNews(limit?: number) {
   const params: Record<string, string> = {
-    pageSize: String(pageSize),
+    pageSize: "100",
     "sort[0][field]": "published_at",
     "sort[0][direction]": "desc",
   };
 
-  const data = await airtableFetch<AirtableListResponse<NewsFields>>(
-    TABLE_NEWS,
-    params
-  );
+  const records = await fetchAllRecords<NewsFields>(TABLE_NEWS, params);
+  const published = records.filter((r) => r.fields.is_published !== false);
 
-  return data.records.filter((r) => r.fields.is_published !== false);
+  if (limit) {
+    return published.slice(0, limit);
+  }
+
+  return published;
 }
 
 /** 詳細ページ用：slug で 1件取得（Formula を使わず JS 側で絞りこむ） */
 export async function getNewsBySlug(slug: string) {
-  const records = await getAllNews(100);
+  const records = await getAllNews();
   return records.find((r) => r.fields.slug === slug) ?? null;
 }
 
