@@ -92,6 +92,11 @@ export type CompanyFields = {
   geo_lng?: number;
   established_on?: string;
   license_info?: string;
+  representative?: string;
+  capital?: string;
+  employees?: string;
+  business_content?: string;
+  qualification?: string;
 };
 
 export async function getCompanyProfile() {

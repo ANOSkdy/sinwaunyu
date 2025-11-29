@@ -12,14 +12,17 @@ export default async function CompanyPage() {
   const addressLine = fields.address_line ?? "北柏木町5丁目2-1";
   const tel = fields.tel ?? "0123-33-5273";
   const fax = fields.fax ?? "0123-33-5287";
-  const email = fields.email ?? "";
-  const serviceArea =
-    fields.service_area ??
-    "恵庭市を中心に、道内一円の物流・産業廃棄物収集運搬に対応します。";
   const licenseInfo =
     fields.license_info ??
-    "一般貨物自動車運送事業・産業廃棄物収集運搬業など、各種許可を取得。";
-  const establishedOn = fields.established_on ?? "2000年4月1日";
+    "一般貨物自動車運送事業　北自貨　第802号\n産業廃棄物収集運搬業　許可番号　第188712号";
+  const businessContent =
+    fields.business_content ??
+    "一般貨物自動車運送事業　北自貨　第802号\n産業廃棄物収集運搬業　許可番号　第188712号";
+  const establishedOn = fields.established_on ?? "1989年5月";
+  const representative = fields.representative ?? "代表取締役　大森 昭彦";
+  const capital = fields.capital ?? "3,000万円";
+  const employees = fields.employees ?? "47人";
+  const qualification = fields.qualification ?? "Gマーク取得済み";
 
   const fullAddress = `${addressPref}${addressCity}${addressLine}`;
 
@@ -138,8 +141,8 @@ export default async function CompanyPage() {
             <div className="space-y-4 rounded-xl border border-[#9ebf9e] bg-white p-7 shadow-md">
               <dl className="space-y-4 text-[15px] text-slate-800 md:text-base">
                 <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-xs font-semibold uppercase tracking-wide text-[#006400]">
-                    COMPANY
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    会社名
                   </dt>
                   <dd className="text-lg font-bold text-[#006400]">
                     {name}
@@ -156,31 +159,10 @@ export default async function CompanyPage() {
                 </div>
                 <div className="flex flex-col gap-1 md:flex-row md:gap-4">
                   <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    電話
+                    役員
                   </dt>
-                  <dd className="font-medium">{tel}</dd>
+                  <dd className="font-medium">{representative}</dd>
                 </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    FAX
-                  </dt>
-                  <dd className="font-medium">{fax}</dd>
-                </div>
-                {email && (
-                  <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                    <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                      メール
-                    </dt>
-                    <dd>
-                      <a
-                        href={`mailto:${email}`}
-                        className="font-medium text-primary underline-offset-2 hover:underline"
-                      >
-                        {email}
-                      </a>
-                    </dd>
-                  </div>
-                )}
                 <div className="flex flex-col gap-1 md:flex-row md:gap-4">
                   <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
                     設立
@@ -189,13 +171,40 @@ export default async function CompanyPage() {
                 </div>
                 <div className="flex flex-col gap-1 md:flex-row md:gap-4">
                   <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    対応エリア
+                    資本金
                   </dt>
-                  <dd>{serviceArea}</dd>
+                  <dd className="font-medium">{capital}</dd>
                 </div>
                 <div className="flex flex-col gap-1 md:flex-row md:gap-4">
                   <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    許可・資格
+                    事業内容
+                  </dt>
+                  <dd className="whitespace-pre-line">{businessContent}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    従業員
+                  </dt>
+                  <dd className="font-medium">{employees}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    連絡先
+                  </dt>
+                  <dd className="space-y-1 font-medium">
+                    <div>TEL {tel}</div>
+                    <div>FAX {fax}</div>
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    資格
+                  </dt>
+                  <dd className="whitespace-pre-line">{qualification}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    許可
                   </dt>
                   <dd className="whitespace-pre-line">{licenseInfo}</dd>
                 </div>
