@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getNewsBySlug, getAttachmentUrl } from "@/lib/airtable";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { getNewsBySlug } from "@/lib/airtable";
+
 type NewsDetailPageProps = {
   params: Promise<{ slug: string }>;
+};
+
+type HeroAttachment = {
+  url: string;
+  type?: string;
 };
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
@@ -22,7 +28,12 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const date = f.published_at;
   const title = f.title;
   const body = f.body ?? "";
-  const heroSrc = getAttachmentUrl(f.hero_image_url);
+  const heroArray = Array.isArray(f.hero_image_url)
+    ? (f.hero_image_url as HeroAttachment[])
+    : undefined;
+  const hero = heroArray?.[0];
+  const heroUrl = hero?.url;
+  const heroIsVideo = hero?.type?.startsWith("video/");
 
   return (
     <div className="pb-16">
@@ -51,14 +62,22 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           </h1>
         </header>
 
-        {/* アイキャッチ画像（Airtable hero_image_url の先頭1枚） */}
-        {heroSrc && (
+        {/* アイキャッチ画像／動画（Airtable hero_image_url の先頭1件） */}
+        {heroUrl && (
           <div className="overflow-hidden rounded-xl bg-slate-100">
-            <img
-              src={heroSrc}
-              alt={title}
-              className="h-60 w-full object-cover md:h-72"
-            />
+            {heroIsVideo ? (
+              <video
+                src={heroUrl}
+                className="h-60 w-full object-cover md:h-72"
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+              />
+            ) : (
+              <img src={heroUrl} alt={title} className="h-60 w-full object-cover md:h-72" />
+            )}
           </div>
         )}
 
@@ -66,7 +85,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         <article className="rounded-xl bg-white p-6 shadow-sm">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            className="prose max-w-none text-sm leading-relaxed text-slate-800 prose-p:mb-3 prose-ul:my-3 prose-li:my-1 prose-li:marker:text-slate-400"
+            className="prose prose-sm max-w-none text-slate-800 prose-p:mb-3 prose-strong:text-[#006400] prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-li:my-1"
           >
             {body}
           </ReactMarkdown>
