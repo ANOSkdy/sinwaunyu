@@ -79,7 +79,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                   {heroIsVideo ? (
                     <video
                       src={heroUrl}
-                      className="h-60 w-full object-cover md:h-72"
+                      className="h-auto w-full"
                       autoPlay
                       loop
                       muted
@@ -87,7 +87,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                       controls
                     />
                   ) : (
-                    <img src={heroUrl} alt={title} className="h-60 w-full object-cover md:h-72" />
+                    <img src={heroUrl} alt={title} className="h-auto w-full" />
                   )}
                 </div>
               );
