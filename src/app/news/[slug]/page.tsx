@@ -99,7 +99,15 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         <article className="rounded-xl bg-white p-6 shadow-sm">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            className="prose prose-sm max-w-none text-slate-800 prose-p:mb-3 prose-strong:text-[#006400] prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-li:my-1"
+            className="
+              prose prose-sm md:prose-base max-w-none
+              text-slate-800
+              prose-headings:text-slate-900
+              prose-h2:text-lg md:prose-h2:text-xl prose-h2:font-semibold
+              prose-strong:text-[#006400]
+              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-ul:list-disc prose-ul:pl-5
+            "
           >
             {body}
           </ReactMarkdown>
