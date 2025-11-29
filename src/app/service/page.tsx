@@ -46,6 +46,8 @@ export default async function ServicePage() {
             {vehicles.map((v) => {
               const f = v.fields;
               const imageSrc = getAttachmentUrl(f.image_url);
+              const fallbackSrc = "/images/tractor.png";
+              const finalSrc = imageSrc || fallbackSrc;
               const type = f.vehicle_type ?? "車両";
               const capacity =
                 f.capacity_ton != null ? `${f.capacity_ton}tクラス` : "";
@@ -57,17 +59,11 @@ export default async function ServicePage() {
                   className="flex flex-col overflow-hidden rounded-xl border border-[#9ebf9e] bg-white shadow-sm"
                 >
                   <div className="relative h-40 bg-slate-200">
-                    {imageSrc ? (
-                      <img
-                        src={imageSrc}
-                        alt={f.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-slate-500">
-                        車両イメージ
-                      </div>
-                    )}
+                    <img
+                      src={finalSrc}
+                      alt={f.name}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
 
                   <div className="flex flex-1 flex-col gap-2 p-5">
