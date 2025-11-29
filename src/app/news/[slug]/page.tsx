@@ -99,7 +99,48 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         <article className="rounded-xl bg-white p-6 shadow-sm">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            className="prose prose-sm max-w-none text-slate-800 prose-p:mb-3 prose-strong:text-[#006400] prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-li:my-1"
+            components={{
+              h1: ({ node, ...props }) => (
+                <h1
+                  className="mt-6 mb-4 text-2xl font-bold text-slate-900 md:text-3xl"
+                  {...props}
+                />
+              ),
+              h2: ({ node, ...props }) => (
+                <h2
+                  className="mt-6 mb-3 text-xl font-semibold text-slate-900 md:text-2xl"
+                  {...props}
+                />
+              ),
+              h3: ({ node, ...props }) => (
+                <h3
+                  className="mt-4 mb-2 text-base font-semibold text-[#006400] md:text-lg"
+                  {...props}
+                />
+              ),
+              p: ({ node, ...props }) => (
+                <p
+                  className="mb-3 text-sm leading-relaxed text-slate-800 md:text-[0.95rem]"
+                  {...props}
+                />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul
+                  className="mb-3 list-disc pl-5 text-sm leading-relaxed text-slate-800"
+                  {...props}
+                />
+              ),
+              li: ({ node, ...props }) => <li className="my-1" {...props} />,
+              strong: ({ node, ...props }) => (
+                <strong className="font-semibold text-[#006400]" {...props} />
+              ),
+              a: ({ node, ...props }) => (
+                <a
+                  className="font-semibold text-primary underline-offset-2 hover:underline"
+                  {...props}
+                />
+              ),
+            }}
           >
             {body}
           </ReactMarkdown>
