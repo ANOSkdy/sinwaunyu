@@ -24,10 +24,10 @@ export function Header() {
           <div className="h-8 w-8 rounded bg-primary" />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold text-slate-900">
-              北海道恵庭市の物流会社
+              株式会社辰和運輸
             </span>
             <span className="text-xs text-slate-500">
-              Logistics & Industrial Waste Transport
+              北海道恵庭市の運送・物流・産業廃棄物収集運搬
             </span>
           </div>
         </Link>

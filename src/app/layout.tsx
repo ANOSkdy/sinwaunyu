@@ -4,9 +4,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "北海道恵庭市の物流会社 | 物流・産業廃棄物収集運搬",
+  title: "株式会社辰和運輸 | 北海道恵庭市の運送・物流・産業廃棄物収集運搬",
   description:
-    "北海道恵庭市を拠点に、道内一円の物流・産業廃棄物収集運搬を行う会社の公式サイトです。",
+    "株式会社辰和運輸は、北海道恵庭市を拠点に札幌圏・道内一円の一般貨物輸送・重機輸送・産業廃棄物収集運搬を行う運送会社です。",
 };
 
 export default function RootLayout({
