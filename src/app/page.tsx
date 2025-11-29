@@ -4,7 +4,7 @@ import { getLatestNews, getVehicles, getAttachmentUrl } from "@/lib/airtable";
 export default async function HomePage() {
   const [news, vehicles] = await Promise.all([
     getLatestNews(3),
-    getVehicles(6),
+    getVehicles(2),
   ]);
 
   return (
