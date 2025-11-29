@@ -31,9 +31,14 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const heroArray = Array.isArray(f.hero_image_url)
     ? (f.hero_image_url as HeroAttachment[])
     : undefined;
-  const hero = heroArray?.[0];
-  const heroUrl = hero?.url;
-  const heroIsVideo = hero?.type?.startsWith("video/");
+  const heroMedia = heroArray
+    ?.filter((att) => att.url)
+    ?.sort((a, b) => {
+      const aIsVideo = a.type?.startsWith("video/") ?? false;
+      const bIsVideo = b.type?.startsWith("video/") ?? false;
+      if (aIsVideo === bIsVideo) return 0;
+      return aIsVideo ? -1 : 1;
+    });
 
   return (
     <div className="pb-16">
@@ -62,24 +67,33 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           </h1>
         </header>
 
-        {/* アイキャッチ画像／動画（Airtable hero_image_url の先頭1件） */}
-        {heroUrl && (
-          <div className="overflow-hidden rounded-xl bg-slate-100">
-            {heroIsVideo ? (
-              <video
-                src={heroUrl}
-                className="h-60 w-full object-cover md:h-72"
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls
-              />
-            ) : (
-              <img src={heroUrl} alt={title} className="h-60 w-full object-cover md:h-72" />
-            )}
+        {/* アイキャッチ画像／動画（Airtable hero_image_url 全件、動画優先で表示） */}
+        {heroMedia?.length ? (
+          <div className="space-y-4">
+            {heroMedia.map((media, index) => {
+              const heroUrl = media.url;
+              const heroIsVideo = media.type?.startsWith("video/");
+
+              return (
+                <div key={`${heroUrl}-${index}`} className="overflow-hidden rounded-xl bg-slate-100">
+                  {heroIsVideo ? (
+                    <video
+                      src={heroUrl}
+                      className="h-60 w-full object-cover md:h-72"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      controls
+                    />
+                  ) : (
+                    <img src={heroUrl} alt={title} className="h-60 w-full object-cover md:h-72" />
+                  )}
+                </div>
+              );
+            })}
           </div>
-        )}
+        ) : null}
 
         {/* 本文 */}
         <article className="rounded-xl bg-white p-6 shadow-sm">
