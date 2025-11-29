@@ -31,7 +31,9 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const heroArray = Array.isArray(f.hero_image_url)
     ? (f.hero_image_url as HeroAttachment[])
     : undefined;
-  const hero = heroArray?.[0];
+  const videoHero = heroArray?.find((att) => att.type?.startsWith("video/"));
+  const imageHero = heroArray?.find((att) => att.type?.startsWith("image/"));
+  const hero = videoHero ?? imageHero;
   const heroUrl = hero?.url;
   const heroIsVideo = hero?.type?.startsWith("video/");
 
