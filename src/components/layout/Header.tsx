@@ -1,0 +1,82 @@
+﻿"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+
+// 「会社情報」は除外
+const navItems = [
+  { href: "/company", label: "事業内容" },
+  { href: "/service", label: "車両紹介" },
+  { href: "/news", label: "お知らせ" },
+  { href: "/recruit", label: "採用情報" },
+  { href: "/contact", label: "お問い合わせ" },
+];
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur shadow-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        {/* 左端：ロゴ＋社名 */}
+        <Link href="/" className="flex items-center gap-3">
+          <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white">
+            <Image
+              src="/images/logo_sinwa.png"
+              alt="株式会社辰和運輸ロゴ"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <span className="text-lg font-bold tracking-tight text-slate-900">
+            株式会社辰和運輸
+          </span>
+        </Link>
+
+        {/* PCナビ */}
+        <nav className="hidden gap-6 text-sm font-medium text-slate-700 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="hover:text-primary"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* モバイルメニュー */}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex items-center rounded-md border border-slate-200 p-2 text-slate-700 md:hidden"
+        >
+          <span className="sr-only">メニュー</span>
+          <div className="space-y-1">
+            <span className="block h-0.5 w-5 bg-slate-700" />
+            <span className="block h-0.5 w-5 bg-slate-700" />
+          </div>
+        </button>
+      </div>
+
+      {/* モバイルナビ */}
+      {open && (
+        <nav className="border-t border-slate-200 bg-white md:hidden">
+          <div className="mx-auto flex max-w-6xl flex-col px-4 py-2 text-sm">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="py-2 text-slate-700 hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}

@@ -1,0 +1,248 @@
+﻿import Link from "next/link";
+import { getCompanyProfile } from "@/lib/airtable";
+
+export default async function CompanyPage() {
+  const record = await getCompanyProfile();
+  const fields = record?.fields ?? {};
+
+  const name = fields.name ?? "株式会社辰和運輸";
+  const postal = fields.postal_code ?? "〒061-1433";
+  const addressPref = fields.address_pref ?? "北海道";
+  const addressCity = fields.address_city ?? "恵庭市";
+  const addressLine = fields.address_line ?? "北柏木町5丁目2-1";
+  const tel = fields.tel ?? "0123-33-5273";
+  const fax = fields.fax ?? "0123-33-5287";
+  const email = fields.email ?? "";
+  const serviceArea =
+    fields.service_area ??
+    "恵庭市を中心に、道内一円の物流・産業廃棄物収集運搬に対応します。";
+  const licenseInfo =
+    fields.license_info ??
+    "一般貨物自動車運送事業・産業廃棄物収集運搬業など、各種許可を取得。";
+  const establishedOn = fields.established_on ?? "2000年4月1日";
+
+  const fullAddress = `${addressPref}${addressCity}${addressLine}`;
+
+  return (
+    <div className="pb-16">
+      <div className="mx-auto max-w-6xl px-4 pt-10 space-y-12">
+        {/* ページタイトル */}
+        <header className="space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Service
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            事業内容
+          </h1>
+          <p className="max-w-2xl text-sm text-slate-600 md:text-base">
+            一般貨物輸送と産業廃棄物収集運搬を中心に、北海道恵庭市を拠点として
+            道内一円の物流を支えています。ここでは当社の主な事業内容と会社情報をご紹介します。
+          </p>
+        </header>
+
+        {/* 上部ヒーロー画像カード */}
+        <section className="rounded-[32px] border border-[#d5e3ff] bg-white shadow-sm">
+          <div className="relative h-64 overflow-hidden rounded-[28px] md:h-80">
+            <img
+              src="/images/company-bg.jpg"
+              alt="株式会社辰和運輸の車両が並ぶ様子"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </section>
+
+        {/* 事業内容セクション */}
+        <section className="space-y-6">
+          <header className="space-y-2">
+            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+              事業内容
+            </h2>
+            <p className="text-sm text-slate-600">
+              現場や荷主さまのニーズに応じて、柔軟に組み合わせ可能な輸送サービスを提供しています。
+            </p>
+          </header>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* 一般貨物自動車運送事業 */}
+            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
+              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
+                SERVICE 01
+              </span>
+              <h3 className="mt-3 text-base font-semibold text-[#006400]">
+                一般貨物自動車運送事業
+              </h3>
+              <p className="mt-2 text-sm text-slate-700">
+                定期便・スポット便など、お客さまの運行計画に合わせて柔軟な輸送体制を構築します。
+                建設資材や機械、一般貨物など幅広い貨物に対応しています。
+              </p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
+                <li>定期輸送・スポット輸送の対応</li>
+                <li>工事現場や倉庫間での資材搬送</li>
+                <li>道内各地への長距離輸送</li>
+              </ul>
+            </article>
+
+            {/* 産業廃棄物収集運搬業 */}
+            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
+              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
+                SERVICE 02
+              </span>
+              <h3 className="mt-3 text-base font-semibold text-[#006400]">
+                産業廃棄物収集運搬業
+              </h3>
+              <p className="mt-2 text-sm text-slate-700">
+                各種法令や安全基準を遵守しながら、建設現場や工場から排出される産業廃棄物の
+                収集運搬を行います。お客さまのコンプライアンス対応も含めてサポートします。
+              </p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
+                <li>許可にもとづく産業廃棄物の収集運搬</li>
+                <li>現場の分別ルールに合わせた積み込み</li>
+                <li>処分場までの安全かつ確実な輸送</li>
+              </ul>
+            </article>
+
+            {/* その他物流ソリューション */}
+            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
+              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
+                SERVICE 03
+              </span>
+              <h3 className="mt-3 text-base font-semibold text-[#006400]">
+                その他物流ソリューション
+              </h3>
+              <p className="mt-2 text-sm text-slate-700">
+                舵切り台車やユニック車などの車両特性を生かし、狭小現場や長尺物輸送など
+                一般的な輸送では対応が難しいご要望にもお応えします。
+              </p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
+                <li>舵切り台車を活用した狭小現場での輸送</li>
+                <li>ユニック車による積み下ろし作業を含む輸送</li>
+                <li>案件ごとの個別相談やルート設計</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        {/* 会社情報セクション */}
+        <section className="space-y-6">
+          <header className="space-y-2">
+            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+              会社情報
+            </h2>
+            <p className="text-sm text-slate-600">
+              北海道恵庭市を拠点に、地域に根ざした物流パートナーとして安心と信頼の輸送サービスを提供しています。
+            </p>
+          </header>
+
+          <div className="grid gap-8 md:grid-cols-[3fr,2fr] md:items-start">
+            {/* 左：会社基本情報（強調版） */}
+            <div className="space-y-4 rounded-xl border border-[#9ebf9e] bg-white p-7 shadow-md">
+              <dl className="space-y-4 text-[15px] text-slate-800 md:text-base">
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-xs font-semibold uppercase tracking-wide text-[#006400]">
+                    COMPANY
+                  </dt>
+                  <dd className="text-lg font-bold text-[#006400]">
+                    {name}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    所在地
+                  </dt>
+                  <dd>
+                    <div>{postal}</div>
+                    <div>{fullAddress}</div>
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    電話
+                  </dt>
+                  <dd className="font-medium">{tel}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    FAX
+                  </dt>
+                  <dd className="font-medium">{fax}</dd>
+                </div>
+                {email && (
+                  <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                    <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                      メール
+                    </dt>
+                    <dd>
+                      <a
+                        href={`mailto:${email}`}
+                        className="font-medium text-primary underline-offset-2 hover:underline"
+                      >
+                        {email}
+                      </a>
+                    </dd>
+                  </div>
+                )}
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    設立
+                  </dt>
+                  <dd className="font-medium">{establishedOn}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    対応エリア
+                  </dt>
+                  <dd>{serviceArea}</dd>
+                </div>
+                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
+                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
+                    許可・資格
+                  </dt>
+                  <dd className="whitespace-pre-line">{licenseInfo}</dd>
+                </div>
+              </dl>
+            </div>
+
+            {/* 右：Googleマップ + お問い合わせカード */}
+            <div className="space-y-4">
+              {/* Google マップ */}
+              <div className="rounded-xl bg-white p-4 shadow-sm">
+                <div className="mb-2 font-semibold text-slate-700">
+                  アクセス（Googleマップ）
+                </div>
+                <div className="aspect-[4/3] w-full overflow-hidden rounded-lg border border-slate-300">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23378.429123997634!2d141.51390907431633!3d42.90863680000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5f74d7f062fbb3cf%3A0x518dac881162ce79!2z44ix6L6w5ZKM6YGL6Ly4IOacrOekvg!5e0!3m2!1sja!2sjp!4v1731120939970!5m2!1sja!2sjp"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="h-full w-full border-0"
+                  />
+                </div>
+                <p className="mt-2 text-xs text-slate-600">
+                  恵庭市内各方面からアクセスしやすい立地にあり、道内主要エリアへのスムーズな配送に適した拠点です。
+                </p>
+              </div>
+
+              {/* お問い合わせ案内 */}
+              <div className="rounded-xl border border-primary bg-primary-light/40 p-4 text-xs text-slate-800">
+                <div className="font-semibold text-primary">
+                  お問い合わせ・ご相談
+                </div>
+                <p className="mt-2">
+                  輸送のご相談やお見積り、産業廃棄物収集運搬に関するお問い合わせは
+                  下記お問い合わせフォームよりお気軽にご連絡ください。
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-3 inline-flex text-xs font-semibold text-primary hover:underline"
+                >
+                  お問い合わせページへ
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}

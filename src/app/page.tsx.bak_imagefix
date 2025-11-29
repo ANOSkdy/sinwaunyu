@@ -1,0 +1,325 @@
+// src/app/page.tsx
+import Image from "next/image";
+import Link from "next/link";
+import { getLatestNews, getVehicles } from "@/lib/airtable";
+
+export default async function HomePage() {
+  const [news, vehicles] = await Promise.all([
+    getLatestNews(3),
+    getVehicles(6),
+  ]);
+
+  return (
+    <div className="space-y-16 pb-16">
+      {/* Hero */}
+      <section className="mt-6 grid gap-8 md:grid-cols-[3fr,2fr] md:items-center">
+        <div className="space-y-4">
+          <p className="text-sm font-semibold text-primary">
+            北海道恵庭市発・道内一円対応
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            信頼できる物流と
+            <br className="hidden md:block" />
+            産業廃棄物収集運搬のパートナー
+          </h1>
+          <p className="text-sm leading-relaxed text-slate-600 md:text-base">
+            一般貨物輸送から産業廃棄物の収集運搬まで。
+            北海道恵庭市を拠点に、地域に根ざした安全・確実な輸送サービスを提供します。
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/company"
+              className="rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow hover:bg-primary-dark"
+            >
+              事業内容を見る
+            </Link>
+            <Link
+              href="/recruit"
+              className="rounded-md border border-primary bg-white px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary-light"
+            >
+              採用情報を見る
+            </Link>
+          </div>
+        </div>
+        <div className="relative h-60 overflow-hidden rounded-xl bg-slate-200 md:h-72">
+          {/* サンプル画像（あとで差し替え） */}
+          <Image
+            src="/images/sample-truck.jpg"
+            alt="北海道の道路を走るトラック"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </section>
+
+      {/* 事業内容サマリ */}
+      <section id="services" className="space-y-6">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Services
+          </p>
+          <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            事業内容
+          </h2>
+          <p className="text-sm text-slate-600">
+            一般貨物輸送と産業廃棄物収集運搬を中心に、道内の多様な物流ニーズにお応えします。
+          </p>
+        </header>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* 一般貨物 */}
+          <div className="rounded-lg bg-white p-5 shadow-sm">
+            <h3 className="text-base font-semibold">一般貨物自動車運送事業</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              定期・スポット便など、お客様のニーズに合わせた柔軟な輸送サービスを提供します。
+            </p>
+            <Link
+              href="/company"
+              className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
+            >
+              詳しく見る
+            </Link>
+          </div>
+
+          {/* 産廃 */}
+          <div className="rounded-lg bg-white p-5 shadow-sm">
+            <h3 className="text-base font-semibold">産業廃棄物収集運搬業</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              許可に基づき、法令を遵守した適正な産業廃棄物の収集運搬を行います。
+            </p>
+            <Link
+              href="/company"
+              className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
+            >
+              詳しく見る
+            </Link>
+          </div>
+
+          {/* その他サービス（ダミー） */}
+          <div className="rounded-lg bg-white p-5 shadow-sm">
+            <h3 className="text-base font-semibold">その他物流ソリューション</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              重機輸送や特殊車両による輸送など、個別のご要望にも対応いたします。
+            </p>
+            <Link
+              href="/company"
+              className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
+            >
+              詳しく見る
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 強み */}
+      <section className="space-y-6 rounded-xl bg-primary-light p-6 md:p-8">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Strength
+          </p>
+          <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            選ばれる理由
+          </h2>
+        </header>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900">
+              恵庭市を中心とした道内ネットワーク
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              地元密着の強みを活かし、道内一円の輸送をスムーズにコーディネートします。
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900">
+              許可に基づく産業廃棄物収集運搬
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              法令遵守・安全第一を徹底し、安心してお任せいただける体制を整えています。
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900">
+              現場に即した柔軟な対応力
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              小口から大型・特殊輸送まで、現場の状況に合わせて柔軟に対応します。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 車両紹介ダイジェスト */}
+      <section className="space-y-6">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Fleet
+          </p>
+          <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            車両紹介
+          </h2>
+          <p className="text-sm text-slate-600">
+            ニーズに応じた多様な車両を保有し、日々の輸送業務を支えています。
+          </p>
+        </header>
+        <div className="grid gap-4 md:grid-cols-3">
+          {vehicles.map((v) => (
+            <article
+              key={v.id}
+              className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
+            >
+              <div className="relative h-32 bg-slate-200">
+                {v.fields.image_url ? (
+                  <Image
+                    src={v.fields.image_url}
+                    alt={v.fields.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xs text-slate-500">
+                    車両イメージ
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-1 flex-col p-4">
+                <h3 className="text-sm font-semibold">{v.fields.name}</h3>
+                {v.fields.type && (
+                  <p className="mt-1 text-xs text-slate-500">{v.fields.type}</p>
+                )}
+                {v.fields.description && (
+                  <p className="mt-2 line-clamp-3 text-xs text-slate-600">
+                    {v.fields.description}
+                  </p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+        <div>
+          <Link
+            href="/service"
+            className="text-sm font-semibold text-primary hover:underline"
+          >
+            車両一覧を見る
+          </Link>
+        </div>
+      </section>
+
+      {/* お知らせ・ニュース */}
+      <section className="space-y-6">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            News
+          </p>
+          <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            お知らせ
+          </h2>
+        </header>
+
+        <div className="space-y-4">
+          {news.map((n) => (
+            <article
+              key={n.id}
+              className="rounded-lg bg-white p-4 shadow-sm md:flex md:items-baseline md:gap-4"
+            >
+              <div className="w-28 shrink-0 text-xs text-slate-500">
+                {n.fields.published_at}
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {n.fields.category && (
+                    <span className="inline-flex rounded-full bg-primary-light px-2 py-0.5 text-[10px] font-semibold text-primary">
+                      {n.fields.category}
+                    </span>
+                  )}
+                  <h3 className="text-sm font-semibold">{n.fields.title}</h3>
+                </div>
+                {n.fields.slug && (
+                  <Link
+                    href={`/news/${n.fields.slug}`}
+                    className="mt-1 inline-flex text-xs font-semibold text-primary hover:underline"
+                  >
+                    詳細を見る
+                  </Link>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div>
+          <Link
+            href="/news"
+            className="text-sm font-semibold text-primary hover:underline"
+          >
+            お知らせ一覧を見る
+          </Link>
+        </div>
+      </section>
+
+      {/* 採用ハイライト */}
+      <section className="space-y-4 rounded-xl bg-primary p-6 text-slate-50 md:p-8">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary-light">
+            Recruit
+          </p>
+          <h2 className="text-xl font-bold">一緒に走る仲間を募集しています</h2>
+        </header>
+        <p className="text-sm text-slate-100/90">
+          安全運転とチームワークを大切にしながら、地域の物流を支えていくドライバー・スタッフを募集しています。
+        </p>
+        <div className="flex flex-wrap gap-3 text-xs">
+          <span className="rounded-full bg-white/10 px-3 py-1">
+            大型・ユニックドライバー歓迎
+          </span>
+          <span className="rounded-full bg-white/10 px-3 py-1">
+            道内長距離・近郊輸送あり
+          </span>
+          <span className="rounded-full bg-white/10 px-3 py-1">
+            安定した仕事量
+          </span>
+        </div>
+        <div>
+          <Link
+            href="/recruit"
+            className="mt-4 inline-flex rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary-light"
+          >
+            採用情報を見る
+          </Link>
+        </div>
+      </section>
+
+      {/* アクセス（会社情報ダイジェスト） */}
+      <section className="space-y-6">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Company
+          </p>
+          <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            会社情報・アクセス
+          </h2>
+        </header>
+        <div className="grid gap-6 md:grid-cols-[2fr,3fr] md:items-start">
+          <div className="space-y-2 text-sm text-slate-700">
+            <p>所在地：北海道恵庭市（※正式住所は後で記載）</p>
+            <p>事業内容：一般貨物自動車運送事業、産業廃棄物収集運搬業 ほか</p>
+            <p>対応エリア：恵庭市を中心に、道内一円</p>
+            <Link
+              href="/about"
+              className="mt-2 inline-flex text-sm font-semibold text-primary hover:underline"
+            >
+              会社情報の詳細を見る
+            </Link>
+          </div>
+          <div className="h-52 overflow-hidden rounded-lg bg-slate-200">
+            {/* 後でGoogle Map埋め込み or 画像に差し替え */}
+            <div className="flex h-full items-center justify-center text-xs text-slate-500">
+              地図（サンプル）
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

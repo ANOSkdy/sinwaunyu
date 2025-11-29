@@ -1,0 +1,72 @@
+// src/lib/airtable.ts
+const AIRTABLE_API_URL = "https://api.airtable.com/v0";
+
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY!;
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID!;
+const TABLE_NEWS = process.env.AIRTABLE_TABLE_NEWS ?? "news";
+const TABLE_VEHICLES = process.env.AIRTABLE_TABLE_VEHICLES ?? "vehicles";
+
+if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
+  console.warn("Airtable env vars are not fully set.");
+}
+
+async function airtableFetch<T>(tableName: string, params: Record<string, string> = {}) {
+  const searchParams = new URLSearchParams(params);
+  const url = `${AIRTABLE_API_URL}/${AIRTABLE_BASE_ID}/${tableName}?${searchParams.toString()}`;
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    console.error("Airtable error:", await res.text());
+    throw new Error(`Failed to fetch from Airtable: ${res.status}`);
+  }
+
+  return (await res.json()) as T;
+}
+
+export type AirtableRecord<T> = {
+  id: string;
+  fields: T;
+  createdTime: string;
+};
+
+export type NewsFields = {
+  title: string;
+  slug?: string;
+  category?: string;
+  published_at?: string;
+  body?: string;
+};
+
+export async function getLatestNews(limit = 3) {
+  type Resp = { records: AirtableRecord<NewsFields>[] };
+
+  const data = await airtableFetch<Resp>(TABLE_NEWS, {
+    pageSize: String(limit),
+    sort: '[{ "field": "published_at", "direction": "desc" }]',
+  });
+
+  return data.records;
+}
+
+export type VehicleFields = {
+  name: string;
+  type?: string;
+  description?: string;
+  image_url?: string;
+};
+
+export async function getVehicles(limit = 6) {
+  type Resp = { records: AirtableRecord<VehicleFields>[] };
+
+  const data = await airtableFetch<Resp>(TABLE_VEHICLES, {
+    pageSize: String(limit),
+  });
+
+  return data.records;
+}

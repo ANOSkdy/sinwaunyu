@@ -1,0 +1,80 @@
+// src/components/layout/Header.tsx
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+const navItems = [
+  { href: "/", label: "ホーム" },
+  { href: "/company", label: "事業内容" },
+  { href: "/service", label: "車両紹介" },
+  { href: "/news", label: "お知らせ" },
+  { href: "/recruit", label: "採用情報" },
+  { href: "/about", label: "会社情報" },
+  { href: "/contact", label: "お問い合わせ" },
+];
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur shadow-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded bg-primary" />
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold text-slate-900">
+              北海道恵庭市の物流会社
+            </span>
+            <span className="text-xs text-slate-500">
+              Logistics & Industrial Waste Transport
+            </span>
+          </div>
+        </Link>
+
+        {/* PC Nav */}
+        <nav className="hidden gap-6 text-sm font-medium text-slate-700 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="hover:text-primary"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex items-center rounded-md border border-slate-200 p-2 text-slate-700 md:hidden"
+        >
+          <span className="sr-only">メニュー</span>
+          <div className="space-y-1">
+            <span className="block h-0.5 w-5 bg-slate-700" />
+            <span className="block h-0.5 w-5 bg-slate-700" />
+          </div>
+        </button>
+      </div>
+
+      {/* Mobile Nav */}
+      {open && (
+        <nav className="border-t border-slate-200 bg-white md:hidden">
+          <div className="mx-auto flex max-w-6xl flex-col px-4 py-2 text-sm">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="py-2 text-slate-700 hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}
