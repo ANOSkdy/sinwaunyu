@@ -2,7 +2,7 @@
 import { getAllNews } from "@/lib/airtable";
 
 export default async function NewsPage() {
-  const news = await getAllNews(100);
+  const news = await getAllNews();
 
   return (
     <div className="pb-16">
