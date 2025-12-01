@@ -10,9 +10,9 @@ export default async function HomePage() {
   return (
     <div className="pb-16">
       {/* ===== フル幅・動画ヒーロー ===== */}
-      <section className="relative h-[70vh] min-h-[420px] w-full overflow-hidden bg-slate-900 md:h-[85vh] md:min-h-[520px]">
+      <section className="relative h-[60vh] min-h-[360px] w-full overflow-hidden bg-slate-900 md:h-[85vh] md:min-h-[520px]">
         <video
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full bg-black object-contain md:object-cover"
           src="/videos/tatsuwa-hero.mp4"
           autoPlay
           loop
