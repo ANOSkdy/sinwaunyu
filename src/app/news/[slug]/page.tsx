@@ -63,7 +63,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
               {category}
             </span>
           </div>
-          <h1 className="mt-5 text-3xl font-bold leading-relaxed tracking-tight md:text-4xl">
+          <h1 className="mt-5 max-w-3xl text-3xl font-bold leading-snug tracking-tight [text-wrap:balance] md:text-4xl">
             {title}
           </h1>
         </header>
