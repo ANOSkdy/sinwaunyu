@@ -24,14 +24,14 @@ export default async function RecruitPage() {
         <section className="mt-12 overflow-hidden rounded-md bg-[#173323] shadow-sm">
           <div className="relative min-h-72 px-6 py-10 text-white md:px-10 md:py-14">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_34%),linear-gradient(135deg,#173323_0%,#2a6044_100%)]" />
-            <div className="relative max-w-3xl">
+            <div className="relative max-w-5xl">
               <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
                 Join Our Team
               </p>
-              <h2 className="mt-4 text-2xl font-bold leading-relaxed md:text-4xl">
+              <h2 className="mt-4 max-w-5xl text-3xl font-bold leading-snug [text-wrap:balance] md:text-4xl">
                 現場を止めない物流を、誠実な運行で支える仕事です。
               </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-8 text-white/75">
+              <p className="mt-4 max-w-3xl text-sm leading-8 text-white/75">
                 車両・資格・経験を活かし、地域の建設現場や企業活動を支える運送会社として、安定した運行体制づくりに取り組んでいます。
               </p>
             </div>
