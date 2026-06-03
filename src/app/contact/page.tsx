@@ -1,8 +1,15 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+const contactTopics = [
+  "輸送・車両手配のご相談",
+  "産業廃棄物収集運搬",
+  "お見積り依頼",
+  "採用に関するお問い合わせ",
+];
 
 export default function ContactPage() {
   const [status, setStatus] = useState<Status>("idle");
@@ -62,190 +69,205 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="pb-16 bg-[#f5faf5]">
-      <div className="mx-auto max-w-6xl px-4 pt-10 space-y-10">
-        {/* ページタイトル */}
-        <header className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-[#006400]">
+    <div className="bg-[#f5f5f3] pb-20 text-slate-950">
+      <div className="mx-auto max-w-6xl px-4 pt-12 md:px-6 md:pt-16">
+        <header className="max-w-3xl space-y-4">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-slate-400">
             Contact
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             お問い合わせ
           </h1>
-          <p className="max-w-2xl text-sm text-slate-600 md:text-base">
-            サービスに関するご質問やお見積りのご依頼、採用に関するお問い合わせなど、
-            こちらのフォームからお気軽にご連絡ください。
+          <p className="max-w-2xl text-sm leading-8 text-slate-600 md:text-base">
+            輸送・収集運搬・採用に関するご相談はこちらからご連絡ください。内容を確認のうえ、担当者よりご連絡いたします。
           </p>
         </header>
 
-        <div className="grid gap-8 md:grid-cols-[3fr,2fr] md:items-start">
-          {/* フォーム */}
-          <section className="rounded-2xl border border-[#9ebf9e] bg-white/95 p-6 shadow-md shadow-[#0064001a]">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-1">
-                <label
-                  htmlFor="name"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  お名前 <span className="text-red-600">*</span>
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                  required
-                />
+        <section className="mt-12 overflow-hidden rounded-md bg-[#173323] shadow-sm">
+          <div className="relative min-h-64 px-6 py-10 text-white md:px-10 md:py-12">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_34%),linear-gradient(135deg,#173323_0%,#2a6044_100%)]" />
+            <div className="relative max-w-3xl">
+              <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
+                Transport Consultation
+              </p>
+              <h2 className="mt-4 text-2xl font-bold leading-relaxed md:text-4xl">
+                運ぶもの、現場条件、スケジュールから最適な対応を検討します。
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-8 text-white/75">
+                建設資材、重機、産業廃棄物など、まずは運搬内容と希望時期をお知らせください。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-6 grid gap-3 md:grid-cols-4">
+          {contactTopics.map((topic) => (
+            <div key={topic} className="border-l-4 border-[#1e3d2c] bg-white px-5 py-4 shadow-sm">
+              <p className="text-xs font-semibold tracking-[0.12em] text-[#1e3d2c]">
+                {topic}
+              </p>
+            </div>
+          ))}
+        </section>
+
+        <div className="mt-16 grid gap-8 lg:grid-cols-[3fr,2fr] lg:items-start">
+          <section className="rounded-md bg-white p-6 shadow-sm md:p-8">
+            <header className="mb-6 space-y-2">
+              <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-xl font-bold tracking-wide">
+                フォームでのお問い合わせ
+              </h2>
+              <p className="pl-5 text-sm leading-7 text-slate-600">
+                必須項目をご入力のうえ、送信してください。
+              </p>
+            </header>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-bold text-slate-800">
+                    お名前 <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="companyName" className="text-sm font-bold text-slate-800">
+                    会社名・部署名
+                  </label>
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <label
-                  htmlFor="companyName"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  会社名・部署名
-                </label>
-                <input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                />
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-bold text-slate-800">
+                    メールアドレス <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="tel" className="text-sm font-bold text-slate-800">
+                    電話番号
+                  </label>
+                  <input
+                    id="tel"
+                    name="tel"
+                    type="tel"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <label
-                  htmlFor="email"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  メールアドレス <span className="text-red-600">*</span>
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                  required
-                />
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="category" className="text-sm font-bold text-slate-800">
+                    お問い合わせ種別
+                  </label>
+                  <select
+                    id="category"
+                    name="category"
+                    defaultValue="estimate"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                  >
+                    <option value="estimate">お見積り・ご相談</option>
+                    <option value="waste">産業廃棄物収集運搬について</option>
+                    <option value="recruit">採用に関するお問い合わせ</option>
+                    <option value="other">その他</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-sm font-bold text-slate-800">
+                    件名
+                  </label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    type="text"
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <label
-                  htmlFor="tel"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  電話番号
-                </label>
-                <input
-                  id="tel"
-                  name="tel"
-                  type="tel"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label
-                  htmlFor="category"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  お問い合わせ種別
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  defaultValue="estimate"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                >
-                  <option value="estimate">お見積り・ご相談</option>
-                  <option value="waste">産業廃棄物収集運搬について</option>
-                  <option value="recruit">採用に関するお問い合わせ</option>
-                  <option value="other">その他</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label
-                  htmlFor="subject"
-                  className="text-sm font-semibold text-slate-800"
-                >
-                  件名
-                </label>
-                <input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label
-                  htmlFor="message"
-                  className="text-sm font-semibold text-slate-800"
-                >
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm font-bold text-slate-800">
                   お問い合わせ内容 <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  rows={6}
-                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-[#006400] focus:outline-none focus:ring-1 focus:ring-[#006400]"
+                  rows={7}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-[#1e3d2c] focus:outline-none focus:ring-1 focus:ring-[#1e3d2c]"
                   required
                 />
               </div>
 
-              {/* ステータスメッセージ */}
               {status === "success" && (
-                <p className="text-xs font-semibold text-[#006400]">
+                <p className="rounded-md bg-[#eef7ee] px-4 py-3 text-xs font-bold text-[#1e3d2c]">
                   お問い合わせありがとうございました。内容を確認のうえ、担当者よりご連絡いたします。
                 </p>
               )}
               {status === "error" && errorMessage && (
-                <p className="text-xs font-semibold text-red-600">
+                <p className="rounded-md bg-red-50 px-4 py-3 text-xs font-bold text-red-700">
                   {errorMessage}
                 </p>
               )}
 
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="inline-flex items-center justify-center rounded-full bg-[#006400] px-8 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#00640066] transition hover:bg-[#004f00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006400] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {status === "loading" ? "送信中..." : "送信する"}
-                </button>
-              </div>
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="inline-flex items-center justify-center rounded-full bg-[#1e3d2c] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#2a5240] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3d2c] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {status === "loading" ? "送信中..." : "送信する"}
+              </button>
             </form>
           </section>
 
-          {/* 右カラム：連絡先・受付時間 */}
-          <section className="space-y-4 rounded-2xl bg-white/95 p-6 shadow-sm">
-            <h2 className="text-sm font-semibold text-[#006400]">
-              お電話でのお問い合わせ
-            </h2>
-            <p className="text-sm text-slate-700">
-              お急ぎのご用件につきましては、お電話でも承っております。
-            </p>
-            <p className="text-lg font-bold text-[#006400]">
-              0123-33-5273
-            </p>
-            <p className="text-xs text-slate-600">
-              受付時間：平日 9:00〜17:00（土日・祝日・年末年始を除く）
-            </p>
+          <aside className="space-y-4">
+            <section className="rounded-md bg-[#1e3d2c] p-6 text-white shadow-sm">
+              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/55">
+                Phone
+              </p>
+              <h2 className="mt-3 text-lg font-bold">お電話でのお問い合わせ</h2>
+              <p className="mt-3 text-sm leading-7 text-white/75">
+                お急ぎのご用件につきましては、お電話でも承っております。
+              </p>
+              <p className="mt-4 text-2xl font-bold">0123-33-5273</p>
+              <p className="mt-2 text-xs leading-6 text-white/65">
+                受付時間：平日 9:00〜17:00（土日・祝日・年末年始を除く）
+              </p>
+            </section>
 
-            <div className="mt-4 h-px w-full bg-slate-200" />
-
-            <h3 className="text-sm font-semibold text-[#006400]">
-              よくあるお問い合わせ例
-            </h3>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-slate-700">
-              <li>建設資材の現場搬入に関するご相談</li>
-              <li>産業廃棄物収集運搬の対応エリア・費用について</li>
-              <li>輸送スケジュールや車両手配に関するご相談</li>
-              <li>ドライバー採用に関するご質問</li>
-            </ul>
-          </section>
+            <section className="rounded-md bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-bold text-[#1e3d2c]">
+                よくあるお問い合わせ例
+              </h3>
+              <ul className="mt-4 space-y-3 text-xs leading-6 text-slate-700">
+                <li>建設資材の現場搬入に関するご相談</li>
+                <li>産業廃棄物収集運搬の対応エリア・費用について</li>
+                <li>輸送スケジュールや車両手配に関するご相談</li>
+                <li>ドライバー採用に関するご質問</li>
+              </ul>
+            </section>
+          </aside>
         </div>
       </div>
     </div>
