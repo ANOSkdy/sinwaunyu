@@ -70,7 +70,7 @@ export default async function RecruitDetailPage({
             </span>
             <span className="text-xs font-semibold text-white/75">{location}</span>
           </div>
-          <h1 className="mt-5 text-3xl font-bold leading-relaxed tracking-tight md:text-4xl">
+          <h1 className="mt-5 max-w-3xl text-3xl font-bold leading-snug tracking-tight [text-wrap:balance] md:text-4xl">
             {f.title}
           </h1>
         </header>
