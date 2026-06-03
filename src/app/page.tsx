@@ -41,14 +41,16 @@ export default async function HomePage() {
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto w-full max-w-6xl px-4 text-white md:px-6">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-white/60">
-              Hokkaido Eniwa Logistics
+              HOKKAIDO ENIWA
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-bold leading-tight tracking-tight md:text-6xl">
-              安心・安全・信頼で、北海道の現場を支える。
+              Shinwa Unyu inc.
             </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-8 text-white/75 md:text-base">
-              株式会社辰和運輸は、一般貨物輸送・重機輸送・産業廃棄物収集運搬を通じて、地域の物流と現場を支えます。
-            </p>
+            <div className="mt-5 max-w-2xl space-y-1 text-sm leading-8 text-white/75 md:text-base">
+              <p>&quot;Peace of mind, safety, and trust&quot;</p>
+              <p>&quot;Transport with heartfelt care and compassion&quot;</p>
+              <p>&quot;A workplace where employees can smile every day&quot;</p>
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/company"
@@ -234,7 +236,7 @@ export default async function HomePage() {
               <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/60">
                 Recruit
               </p>
-              <h2 className="mt-4 text-2xl font-bold leading-relaxed md:text-3xl">
+              <h2 className="mt-4 max-w-2xl text-2xl font-bold leading-snug [text-wrap:balance] md:text-3xl">
                 一緒に走る仲間を募集しています。
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-8 text-white/75">
