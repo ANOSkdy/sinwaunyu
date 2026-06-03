@@ -1,5 +1,29 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getCompanyProfile } from "@/lib/airtable";
+
+const serviceCards = [
+  {
+    label: "SERVICE 01",
+    title: "一般貨物自動車運送事業",
+    description:
+      "定期便・スポット便など、お客さまの運行計画に合わせて柔軟な輸送体制を構築します。建設資材や機械、一般貨物など幅広い貨物に対応しています。",
+    items: ["定期輸送・スポット輸送", "工事現場や倉庫間での資材搬送", "道内各地への長距離輸送"],
+  },
+  {
+    label: "SERVICE 02",
+    title: "産業廃棄物収集運搬業",
+    description:
+      "各種法令や安全基準を遵守しながら、建設現場や工場から排出される産業廃棄物の収集運搬を行います。",
+    items: ["許可にもとづく収集運搬", "現場ルールに合わせた積み込み", "処分場までの安全輸送"],
+  },
+  {
+    label: "SERVICE 03",
+    title: "物流ソリューション",
+    description:
+      "舵切り台車やユニック車などの車両特性を生かし、狭小現場や長尺物輸送など難易度の高いご要望にも対応します。",
+    items: ["狭小現場での輸送", "積み下ろし作業を含む輸送", "案件ごとのルート設計"],
+  },
+];
 
 export default async function CompanyPage() {
   const record = await getCompanyProfile();
@@ -25,200 +49,119 @@ export default async function CompanyPage() {
   const qualification = fields.qualification ?? "Gマーク取得済み";
 
   const fullAddress = `${addressPref}${addressCity}${addressLine}`;
+  const companyRows = [
+    ["会社名", name],
+    ["所在地", `${postal}\n${fullAddress}`],
+    ["役員", representative],
+    ["設立", establishedOn],
+    ["資本金", capital],
+    ["事業内容", businessContent],
+    ["従業員", employees],
+    ["連絡先", `TEL ${tel}\nFAX ${fax}`],
+    ["資格", qualification],
+    ["許可", licenseInfo],
+  ];
 
   return (
-    <div className="pb-16">
-      <div className="mx-auto max-w-6xl px-4 pt-10 space-y-12">
-        {/* ページタイトル */}
-        <header className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+    <div className="bg-[#f5f5f3] pb-20 text-slate-950">
+      <div className="mx-auto max-w-6xl px-4 pt-12 md:px-6 md:pt-16">
+        <header className="max-w-3xl space-y-4">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-slate-400">
             Service
           </p>
-          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             事業内容
           </h1>
-          <p className="max-w-2xl text-sm text-slate-600 md:text-base">
-            一般貨物輸送と産業廃棄物収集運搬を中心に、北海道恵庭市を拠点として
-            道内一円の物流を支えています。ここでは当社の主な事業内容と会社情報をご紹介します。
+          <p className="max-w-2xl text-sm leading-8 text-slate-600 md:text-base">
+            一般貨物輸送と産業廃棄物収集運搬を中心に、北海道恵庭市を拠点として道内一円の物流を支えています。
           </p>
         </header>
 
-        {/* 上部ヒーロー画像カード */}
-        <section className="rounded-[32px] border border-[#d5e3ff] bg-white shadow-sm">
-          <div className="relative h-64 overflow-hidden rounded-[28px] md:h-80">
+        <section className="mt-12 overflow-hidden rounded-md bg-[#173323] shadow-sm">
+          <div className="relative h-64 md:h-[360px]">
             <img
               src="/images/company-bg.jpg"
               alt="株式会社辰和運輸の車両が並ぶ様子"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover opacity-90"
             />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0f2619]/85 via-[#0f2619]/35 to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6 text-white md:bottom-8 md:left-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
+                Transport & Waste Collection
+              </p>
+              <p className="mt-3 max-w-2xl text-xl font-bold leading-relaxed md:text-3xl">
+                車両・人員・許可を備え、北海道の現場を確実に支えます。
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* 事業内容セクション */}
-        <section className="space-y-6">
-          <header className="space-y-2">
-            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
-              事業内容
+        <section className="mt-16 space-y-8">
+          <header className="space-y-3">
+            <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-xl font-bold tracking-wide">
+              主な事業領域
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="max-w-3xl pl-5 text-sm leading-7 text-slate-600">
               現場や荷主さまのニーズに応じて、柔軟に組み合わせ可能な輸送サービスを提供しています。
             </p>
           </header>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {/* 一般貨物自動車運送事業 */}
-            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
-              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
-                SERVICE 01
-              </span>
-              <h3 className="mt-3 text-base font-semibold text-[#006400]">
-                一般貨物自動車運送事業
-              </h3>
-              <p className="mt-2 text-sm text-slate-700">
-                定期便・スポット便など、お客さまの運行計画に合わせて柔軟な輸送体制を構築します。
-                建設資材や機械、一般貨物など幅広い貨物に対応しています。
-              </p>
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
-                <li>定期輸送・スポット輸送の対応</li>
-                <li>工事現場や倉庫間での資材搬送</li>
-                <li>道内各地への長距離輸送</li>
-              </ul>
-            </article>
-
-            {/* 産業廃棄物収集運搬業 */}
-            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
-              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
-                SERVICE 02
-              </span>
-              <h3 className="mt-3 text-base font-semibold text-[#006400]">
-                産業廃棄物収集運搬業
-              </h3>
-              <p className="mt-2 text-sm text-slate-700">
-                各種法令や安全基準を遵守しながら、建設現場や工場から排出される産業廃棄物の
-                収集運搬を行います。お客さまのコンプライアンス対応も含めてサポートします。
-              </p>
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
-                <li>許可にもとづく産業廃棄物の収集運搬</li>
-                <li>現場の分別ルールに合わせた積み込み</li>
-                <li>処分場までの安全かつ確実な輸送</li>
-              </ul>
-            </article>
-
-            {/* その他物流ソリューション */}
-            <article className="flex flex-col rounded-xl border border-[#9ebf9e] bg-[#f5faf5] p-5 shadow-sm">
-              <span className="inline-flex w-fit rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
-                SERVICE 03
-              </span>
-              <h3 className="mt-3 text-base font-semibold text-[#006400]">
-                その他物流ソリューション
-              </h3>
-              <p className="mt-2 text-sm text-slate-700">
-                舵切り台車やユニック車などの車両特性を生かし、狭小現場や長尺物輸送など
-                一般的な輸送では対応が難しいご要望にもお応えします。
-              </p>
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-slate-700">
-                <li>舵切り台車を活用した狭小現場での輸送</li>
-                <li>ユニック車による積み下ろし作業を含む輸送</li>
-                <li>案件ごとの個別相談やルート設計</li>
-              </ul>
-            </article>
+          <div className="grid gap-5 md:grid-cols-3">
+            {serviceCards.map((service) => (
+              <article
+                key={service.label}
+                className="group flex min-h-full flex-col rounded-md bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <span className="w-fit rounded-sm bg-[#1e3d2c] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white">
+                  {service.label}
+                </span>
+                <h3 className="mt-5 text-lg font-bold leading-relaxed text-[#1e3d2c]">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  {service.description}
+                </p>
+                <ul className="mt-5 space-y-2 text-xs leading-6 text-slate-700">
+                  {service.items.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#1e3d2c]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* 会社情報セクション */}
-        <section className="space-y-6">
-          <header className="space-y-2">
-            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+        <section className="mt-16 space-y-8">
+          <header className="space-y-3">
+            <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-xl font-bold tracking-wide">
               会社情報
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="max-w-3xl pl-5 text-sm leading-7 text-slate-600">
               北海道恵庭市を拠点に、地域に根ざした物流パートナーとして安心と信頼の輸送サービスを提供しています。
             </p>
           </header>
 
-          <div className="grid gap-8 md:grid-cols-[3fr,2fr] md:items-start">
-            {/* 左：会社基本情報（強調版） */}
-            <div className="space-y-4 rounded-xl border border-[#9ebf9e] bg-white p-7 shadow-md">
-              <dl className="space-y-4 text-[15px] text-slate-800 md:text-base">
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    会社名
-                  </dt>
-                  <dd className="text-lg font-bold text-[#006400]">
-                    {name}
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    所在地
-                  </dt>
-                  <dd>
-                    <div>{postal}</div>
-                    <div>{fullAddress}</div>
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    役員
-                  </dt>
-                  <dd className="font-medium">{representative}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    設立
-                  </dt>
-                  <dd className="font-medium">{establishedOn}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    資本金
-                  </dt>
-                  <dd className="font-medium">{capital}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    事業内容
-                  </dt>
-                  <dd className="whitespace-pre-line">{businessContent}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    従業員
-                  </dt>
-                  <dd className="font-medium">{employees}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    連絡先
-                  </dt>
-                  <dd className="space-y-1 font-medium">
-                    <div>TEL {tel}</div>
-                    <div>FAX {fax}</div>
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    資格
-                  </dt>
-                  <dd className="whitespace-pre-line">{qualification}</dd>
-                </div>
-                <div className="flex flex-col gap-1 md:flex-row md:gap-4">
-                  <dt className="w-28 shrink-0 text-sm font-semibold text-[#006400]">
-                    許可
-                  </dt>
-                  <dd className="whitespace-pre-line">{licenseInfo}</dd>
-                </div>
+          <div className="grid gap-8 lg:grid-cols-[3fr,2fr] lg:items-start">
+            <div className="rounded-md bg-white p-6 shadow-sm md:p-8">
+              <dl className="divide-y divide-slate-100 text-sm text-slate-800">
+                {companyRows.map(([label, value]) => (
+                  <div key={label} className="grid gap-2 py-4 md:grid-cols-[8rem,1fr]">
+                    <dt className="font-bold text-[#1e3d2c]">{label}</dt>
+                    <dd className="whitespace-pre-line leading-7">{value}</dd>
+                  </div>
+                ))}
               </dl>
             </div>
 
-            {/* 右：Googleマップ + お問い合わせカード */}
             <div className="space-y-4">
-              {/* Google マップ */}
-              <div className="rounded-xl bg-white p-4 shadow-sm">
-                <div className="mb-2 font-semibold text-slate-700">
-                  アクセス（Googleマップ）
+              <div className="rounded-md bg-white p-4 shadow-sm">
+                <div className="mb-3 font-bold text-[#1e3d2c]">
+                  アクセス
                 </div>
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-lg border border-slate-300">
+                <div className="aspect-[4/3] w-full overflow-hidden rounded-md border border-slate-200">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23378.429123997634!2d141.51390907431633!3d42.90863680000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5f74d7f062fbb3cf%3A0x518dac881162ce79!2z44ix6L6w5ZKM6YGL6Ly4IOacrOekvg!5e0!3m2!1sja!2sjp!4v1731120939970!5m2!1sja!2sjp"
                     loading="lazy"
@@ -227,23 +170,22 @@ export default async function CompanyPage() {
                     className="h-full w-full border-0"
                   />
                 </div>
-                <p className="mt-2 text-xs text-slate-600">
+                <p className="mt-3 text-xs leading-6 text-slate-600">
                   恵庭市内各方面からアクセスしやすい立地にあり、道内主要エリアへのスムーズな配送に適した拠点です。
                 </p>
               </div>
 
-              {/* お問い合わせ案内 */}
-              <div className="rounded-xl border border-primary bg-primary-light/40 p-4 text-xs text-slate-800">
-                <div className="font-semibold text-primary">
-                  お問い合わせ・ご相談
-                </div>
-                <p className="mt-2">
-                  輸送のご相談やお見積り、産業廃棄物収集運搬に関するお問い合わせは
-                  下記お問い合わせフォームよりお気軽にご連絡ください。
+              <div className="rounded-md bg-[#1e3d2c] p-5 text-white shadow-sm">
+                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/55">
+                  Contact
+                </p>
+                <h3 className="mt-3 text-lg font-bold">輸送のご相談はこちら</h3>
+                <p className="mt-2 text-xs leading-6 text-white/75">
+                  お見積り、産業廃棄物収集運搬、車両手配に関するご相談を承ります。
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-3 inline-flex text-xs font-semibold text-primary hover:underline"
+                  className="mt-4 inline-flex rounded-full bg-white px-5 py-2 text-xs font-bold text-[#1e3d2c] transition hover:bg-slate-100"
                 >
                   お問い合わせページへ
                 </Link>
