@@ -89,7 +89,7 @@ export default async function CompanyPage() {
               <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
                 Transport & Waste Collection
               </p>
-              <p className="mt-3 max-w-2xl text-xl font-bold leading-relaxed md:text-3xl">
+              <p className="mt-3 max-w-4xl text-2xl font-bold leading-snug [text-wrap:balance] md:text-4xl">
                 車両・人員・許可を備え、北海道の現場を確実に支えます。
               </p>
             </div>
