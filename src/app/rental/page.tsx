@@ -87,13 +87,60 @@ const serviceAreas = [
   "岩見沢市",
 ];
 
-function normalizeForklift(fields: RentalForkliftFields): RentalForklift {
+function normalizeFieldName(fieldName: string) {
+  return fieldName.normalize("NFKC").replace(/^\uFEFF/, "").trim().toLowerCase();
+}
+
+function stringifyFieldValue(value: unknown): string | undefined {
+  if (typeof value === "string") {
+    return value.trim() || undefined;
+  }
+
+  if (typeof value === "number") {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => stringifyFieldValue(item))
+      .filter((item): item is string => Boolean(item))
+      .join("、") || undefined;
+  }
+
+  return undefined;
+}
+
+function getRentalField(
+  fields: RentalForkliftFields,
+  fieldName: keyof RentalForkliftFields
+) {
+  const directValue = stringifyFieldValue(fields[fieldName]);
+
+  if (directValue) {
+    return directValue;
+  }
+
+  const normalizedFieldName = normalizeFieldName(fieldName);
+  const entry = Object.entries(fields).find(
+    ([key]) => normalizeFieldName(key) === normalizedFieldName
+  );
+
+  return stringifyFieldValue(entry?.[1]);
+}
+
+function normalizeForklift(
+  fields: RentalForkliftFields,
+  fallback?: RentalForklift
+): RentalForklift {
   return {
-    maker: fields.maker?.trim() || "メーカー確認中",
-    capacity: fields.capacity?.trim() || "容量確認中",
-    power: fields.power?.trim() || "動力確認中",
-    fork_length: fields.fork_length?.trim() || "爪・サヤ仕様確認中",
-    usage: fields.usage?.trim() || "用途はお問い合わせください",
+    maker: getRentalField(fields, "maker") ?? fallback?.maker ?? "メーカー確認中",
+    capacity: getRentalField(fields, "capacity") ?? fallback?.capacity ?? "容量確認中",
+    power: getRentalField(fields, "power") ?? fallback?.power ?? "動力確認中",
+    fork_length:
+      getRentalField(fields, "fork_length") ??
+      fallback?.fork_length ??
+      "爪・サヤ仕様確認中",
+    usage: getRentalField(fields, "usage") ?? fallback?.usage ?? "用途はお問い合わせください",
   };
 }
 
@@ -109,7 +156,9 @@ async function getDisplayForklifts(): Promise<{
     }
 
     return {
-      forklifts: records.map((record) => normalizeForklift(record.fields)),
+      forklifts: records.map((record, index) =>
+        normalizeForklift(record.fields, fallbackForklifts[index])
+      ),
       isFallback: false,
     };
   } catch {
