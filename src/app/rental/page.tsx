@@ -193,13 +193,15 @@ export default async function RentalPage() {
         <section className="overflow-hidden rounded-md bg-[#173323] shadow-sm">
           <div className="relative px-6 py-10 text-white md:px-10 md:py-14">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.18),_transparent_34%),linear-gradient(135deg,_#173323_0%,_#244b33_55%,_#0f2619_100%)]" />
-            <div className="relative grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-end">
-              <div>
+            <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-end">
+              <div className="min-w-0">
                 <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
                   Forklift Rental
                 </p>
-                <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight [text-wrap:balance] md:text-5xl">
-                  道央圏の現場に即対応！【1.5t〜6t】フォークリフト・レンタルサービス
+                <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight tracking-tight md:text-[44px] lg:text-5xl">
+                  <span className="block">道央圏の現場に即対応！</span>
+                  <span className="block">【1.5t〜6t】フォークリフト・</span>
+                  <span className="block">レンタルサービス</span>
                 </h1>
                 <p className="mt-6 max-w-3xl text-sm leading-8 text-white/80 md:text-base">
                   「大手に在庫がない」「長爪が使いたい」「屋外用の強いディーゼル車が欲しい」そんなお悩み、辰和運輸がすべて解決します！
