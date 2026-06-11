@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getLatestNews, getVehicles, getAttachmentUrl } from "@/lib/airtable";
 
 export default async function HomePage() {
@@ -30,9 +30,9 @@ export default async function HomePage() {
               Shinwa Unyu inc.
             </h1>
             <div className="mt-4 space-y-1 text-xs text-slate-100 md:text-base">
-              <p>"Peace of mind, safety, and trust"</p>
-              <p>"Transport with heartfelt care and compassion"</p>
-              <p>"A workplace where employees can smile every day"</p>
+              <p>&ldquo;Peace of mind, safety, and trust&rdquo;</p>
+              <p>&ldquo;Transport with heartfelt care and compassion&rdquo;</p>
+              <p>&ldquo;A workplace where employees can smile every day&rdquo;</p>
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
