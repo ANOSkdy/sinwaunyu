@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 const navItems = [
   { href: "/company", label: "事業内容" },
   { href: "/service", label: "車両紹介" },
+  { href: "/rental", label: "レンタル" },
   { href: "/news", label: "お知らせ" },
   { href: "/recruit", label: "採用情報" },
   { href: "/contact", label: "お問い合わせ" },

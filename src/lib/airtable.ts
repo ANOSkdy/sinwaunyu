@@ -1,19 +1,15 @@
-﻿const AIRTABLE_API_URL = "https://api.airtable.com/v0";
+const AIRTABLE_API_URL = "https://api.airtable.com/v0";
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-
-if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-  throw new Error(
-    "Airtable env vars are missing. Check AIRTABLE_API_KEY and AIRTABLE_BASE_ID."
-  );
-}
 
 const TABLE_COMPANY = process.env.AIRTABLE_TABLE_COMPANY ?? "company";
 const TABLE_NEWS = process.env.AIRTABLE_TABLE_NEWS ?? "news";
 const TABLE_VEHICLES = process.env.AIRTABLE_TABLE_VEHICLES ?? "vehicles";
 const TABLE_RECRUIT = process.env.AIRTABLE_TABLE_RECRUIT ?? "recruit";
 const TABLE_CONTACT = process.env.AIRTABLE_TABLE_CONTACT ?? "contact";
+const TABLE_RENTAL_FORKLIFTS =
+  process.env.AIRTABLE_TABLE_RENTAL_FORKLIFTS ?? "rental_forklifts";
 
 type AirtableListResponse<T> = {
   records: AirtableRecord<T>[];
@@ -52,6 +48,10 @@ async function airtableFetch<T>(
   tableName: string,
   params: Record<string, string> = {}
 ): Promise<T> {
+  if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
+    return { records: [] } as T;
+  }
+
   const searchParams = new URLSearchParams(params);
   const url = `${AIRTABLE_API_URL}/${AIRTABLE_BASE_ID}/${encodeURIComponent(
     tableName
@@ -66,8 +66,7 @@ async function airtableFetch<T>(
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error("Airtable error:", text);
+    console.error("Airtable error:", { tableName, status: res.status });
     throw new Error(`Failed to fetch from Airtable: ${res.status}`);
   }
 
@@ -209,6 +208,33 @@ export async function getVehicles(limit = 6) {
 
   const data = await airtableFetch<AirtableListResponse<VehicleFields>>(
     TABLE_VEHICLES,
+    params
+  );
+
+  return data.records.filter((r) => r.fields.is_published !== false);
+}
+
+/* ========== rental_forklifts テーブル ========== */
+export type RentalForkliftFields = {
+  maker?: string;
+  capacity?: string;
+  power?: string;
+  fork_length?: string;
+  usage?: string;
+  sort_order?: number;
+  is_published?: boolean;
+};
+
+export async function getRentalForklifts(limit = 20) {
+  const pageSize = Math.min(Math.max(limit, 1), 100);
+  const params: Record<string, string> = {
+    pageSize: String(pageSize),
+    "sort[0][field]": "sort_order",
+    "sort[0][direction]": "asc",
+  };
+
+  const data = await airtableFetch<AirtableListResponse<RentalForkliftFields>>(
+    TABLE_RENTAL_FORKLIFTS,
     params
   );
 
