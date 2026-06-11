@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -81,6 +81,9 @@ export function Footer() {
             </Link>
             <Link href="/service" className="hover:underline">
               車両紹介
+            </Link>
+            <Link href="/rental" className="hover:underline">
+              レンタル
             </Link>
             <Link href="/news" className="hover:underline">
               お知らせ
