@@ -1,5 +1,23 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getLatestNews, getVehicles, getAttachmentUrl } from "@/lib/airtable";
+
+const serviceCards = [
+  {
+    label: "SERVICE 01",
+    title: "一般貨物自動車運送事業",
+    description: "定期・スポット便など、お客様のニーズに合わせた柔軟な輸送サービスを提供します。",
+  },
+  {
+    label: "SERVICE 02",
+    title: "産業廃棄物収集運搬業",
+    description: "許可に基づき、法令を遵守した適正な産業廃棄物の収集運搬を行います。",
+  },
+  {
+    label: "SERVICE 03",
+    title: "物流ソリューション",
+    description: "重機輸送や特殊車両による輸送など、個別のご要望にも対応いたします。",
+  },
+];
 
 export default async function HomePage() {
   const [news, vehicles] = await Promise.all([
@@ -8,9 +26,8 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="pb-16">
-      {/* ===== フル幅・動画ヒーロー ===== */}
-      <section className="relative h-[70vh] min-h-[420px] w-full overflow-hidden bg-slate-900 md:h-[85vh] md:min-h-[520px]">
+    <div className="bg-[#f5f5f3] pb-20 text-slate-950">
+      <section className="relative h-[72vh] min-h-[440px] w-full overflow-hidden bg-slate-900 md:h-[86vh] md:min-h-[560px]">
         <video
           className="absolute inset-0 h-full w-full object-cover"
           src="/videos/tatsuwa-hero.mp4"
@@ -19,55 +36,52 @@ export default async function HomePage() {
           muted
           playsInline
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2619]/85 via-black/35 to-black/20" />
 
-        <div className="relative z-10 flex h-full items-center justify-center">
-          <div className="mx-auto max-w-4xl px-4 text-center text-white">
-            <p className="text-xs font-semibold tracking-[0.25em] md:text-sm">
+        <div className="relative z-10 flex h-full items-center">
+          <div className="mx-auto w-full max-w-6xl px-4 text-white md:px-6">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-white/60">
               HOKKAIDO ENIWA
             </p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="mt-5 max-w-4xl text-4xl font-bold leading-tight tracking-tight md:text-6xl">
               Shinwa Unyu inc.
             </h1>
-            <div className="mt-4 space-y-1 text-xs text-slate-100 md:text-base">
-              <p>"Peace of mind, safety, and trust"</p>
-              <p>"Transport with heartfelt care and compassion"</p>
-              <p>"A workplace where employees can smile every day"</p>
+            <div className="mt-5 max-w-2xl space-y-1 text-sm leading-8 text-white/75 md:text-base">
+              <p>&quot;Peace of mind, safety, and trust&quot;</p>
+              <p>&quot;Transport with heartfelt care and compassion&quot;</p>
+              <p>&quot;A workplace where employees can smile every day&quot;</p>
             </div>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/company"
-                className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-black/20 hover:bg-primary-dark"
+                className="rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1e3d2c] transition hover:bg-slate-100"
               >
                 事業内容を見る
               </Link>
               <Link
-                href="/recruit"
-                className="rounded-full border border-white/80 bg-white/10 px-6 py-2.5 text-sm font-semibold text-white backdrop-blur hover:bg-white/20"
+                href="/service"
+                className="rounded-full border border-white/70 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/20"
               >
-                採用情報を見る
+                車両紹介を見る
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== コンテンツ本体 ===== */}
-      <div className="mx-auto mt-16 max-w-6xl space-y-16 px-4">
-        {/* News お知らせ（先頭に配置） */}
-        <section className="space-y-6">
-          <header className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+      <div className="mx-auto mt-16 max-w-6xl space-y-20 px-4 md:px-6">
+        <section className="space-y-8">
+          <header className="space-y-3">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-slate-400">
               News
             </p>
-            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-2xl font-bold tracking-wide">
               お知らせ
             </h2>
           </header>
 
-          {/* セクション全体を淡いグリーン系カードで強調 */}
-          <div className="overflow-hidden rounded-2xl border border-[#d5e3d5] bg-[#f5faf5] shadow-sm">
-            <div className="divide-y divide-slate-200">
+          <div className="overflow-hidden rounded-md bg-white shadow-sm">
+            <div className="divide-y divide-slate-100">
               {news.map((n) => {
                 const category = n.fields.category || "お知らせ";
                 const date = n.fields.published_at;
@@ -75,34 +89,30 @@ export default async function HomePage() {
                 const slug = n.fields.slug;
 
                 return (
-                  <article
-                    key={n.id}
-                    className="px-4 py-4 transition-colors hover:bg-white/80 md:px-6 md:py-5"
-                  >
-                    <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-6">
-                      {/* 日付 + タグ（タグは日付とタイトルの間） */}
-                      <div className="flex items-center gap-3 text-xs text-slate-500">
-                        {date && (
-                          <span className="font-semibold">{date}</span>
-                        )}
-                        <span className="inline-flex items-center rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
+                  <article key={n.id} className="group transition hover:bg-[#f7faf7]">
+                    <div className="grid gap-3 px-5 py-5 md:grid-cols-[14rem,1fr,2rem] md:items-center md:px-7">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                        {date && <span className="font-semibold">{date}</span>}
+                        <span className="inline-flex rounded-sm bg-[#1e3d2c] px-3 py-1 text-[10px] font-bold tracking-[0.18em] text-white">
                           {category}
                         </span>
                       </div>
-                      {/* タイトル */}
-                      <div className="md:flex-1">
+                      <div>
                         {slug ? (
                           <Link
                             href={`/news/${slug}`}
-                            className="text-sm font-semibold text-slate-900 hover:underline"
+                            className="text-sm font-bold leading-7 text-slate-900 transition group-hover:text-[#1e3d2c] md:text-base"
                           >
                             {title}
                           </Link>
                         ) : (
-                          <p className="text-sm font-semibold text-slate-900">
+                          <p className="text-sm font-bold leading-7 text-slate-900 md:text-base">
                             {title}
                           </p>
                         )}
+                      </div>
+                      <div className="hidden text-right text-[#1e3d2c] transition group-hover:translate-x-1 md:block">
+                        →
                       </div>
                     </div>
                   </article>
@@ -111,116 +121,98 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="text-right">
-            <Link
-              href="/news"
-              className="text-sm font-semibold text-primary hover:underline"
-            >
-              お知らせ一覧を見る
-            </Link>
-          </div>
+          <Link
+            href="/news"
+            className="inline-flex rounded-full bg-[#1e3d2c] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#2a5240]"
+          >
+            お知らせ一覧を見る
+          </Link>
         </section>
 
-        {/* 事業内容サマリ */}
-        <section id="services" className="space-y-6">
-          <header className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+        <section id="services" className="space-y-8">
+          <header className="space-y-3">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-slate-400">
               Services
             </p>
-            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-2xl font-bold tracking-wide">
               事業内容
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="max-w-3xl pl-5 text-sm leading-7 text-slate-600">
               一般貨物輸送と産業廃棄物収集運搬を中心に、道内の多様な物流ニーズにお応えします。
             </p>
           </header>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-lg bg-white p-5 shadow-sm">
-              <h3 className="text-base font-semibold">一般貨物自動車運送事業</h3>
-              <p className="mt-2 text-sm text-slate-600">
-                定期・スポット便など、お客様のニーズに合わせた柔軟な輸送サービスを提供します。
-              </p>
-              <Link
-                href="/company"
-                className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
+          <div className="grid gap-5 md:grid-cols-3">
+            {serviceCards.map((service) => (
+              <article
+                key={service.label}
+                className="group rounded-md bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
-                詳しく見る
-              </Link>
-            </div>
-
-            <div className="rounded-lg bg-white p-5 shadow-sm">
-              <h3 className="text-base font-semibold">産業廃棄物収集運搬業</h3>
-              <p className="mt-2 text-sm text-slate-600">
-                許可に基づき、法令を遵守した適正な産業廃棄物の収集運搬を行います。
-              </p>
-              <Link
-                href="/company"
-                className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
-              >
-                詳しく見る
-              </Link>
-            </div>
-
-            <div className="rounded-lg bg-white p-5 shadow-sm">
-              <h3 className="text-base font-semibold">その他物流ソリューション</h3>
-              <p className="mt-2 text-sm text-slate-600">
-                重機輸送や特殊車両による輸送など、個別のご要望にも対応いたします。
-              </p>
-              <Link
-                href="/company"
-                className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline"
-              >
-                詳しく見る
-              </Link>
-            </div>
+                <span className="rounded-sm bg-[#1e3d2c] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white">
+                  {service.label}
+                </span>
+                <h3 className="mt-5 text-lg font-bold leading-relaxed text-[#1e3d2c]">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  {service.description}
+                </p>
+                <Link
+                  href="/company"
+                  className="mt-5 inline-flex text-sm font-bold text-[#1e3d2c] hover:underline"
+                >
+                  詳しく見る
+                </Link>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* 車両紹介ダイジェスト */}
-        <section className="space-y-6">
-          <header className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+        <section className="space-y-8">
+          <header className="space-y-3">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.45em] text-slate-400">
               Fleet
             </p>
-            <h2 className="border-l-4 border-primary pl-3 text-xl font-bold">
+            <h2 className="border-l-4 border-[#1e3d2c] pl-4 text-2xl font-bold tracking-wide">
               車両紹介
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="max-w-3xl pl-5 text-sm leading-7 text-slate-600">
               ニーズに応じた多様な車両を保有し、日々の輸送業務を支えています。
             </p>
           </header>
-          <div className="grid gap-4 md:grid-cols-3">
+
+          <div className="grid gap-5 md:grid-cols-2">
             {vehicles.map((v) => {
               const imageSrc = getAttachmentUrl(v.fields.image_url);
 
               return (
                 <article
                   key={v.id}
-                  className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
+                  className="group overflow-hidden rounded-md bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 >
-                  <div className="relative h-32 bg-slate-200">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-[#1e3d2c]">
                     {imageSrc ? (
                       <img
                         src={imageSrc}
                         alt={v.fields.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-slate-500">
-                        車両イメージ
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#173323] to-[#2a6044] text-5xl">
+                        🚚
                       </div>
                     )}
-                  </div>
-                  <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-sm font-semibold">{v.fields.name}</h3>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f2619]/70 via-transparent to-transparent" />
                     {v.fields.vehicle_type && (
-                      <p className="mt-1 text-xs text-slate-500">
+                      <span className="absolute bottom-4 left-4 rounded-sm bg-white/90 px-3 py-1 text-[10px] font-bold tracking-[0.18em] text-[#1e3d2c]">
                         {v.fields.vehicle_type}
-                      </p>
+                      </span>
                     )}
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-[#1e3d2c]">{v.fields.name}</h3>
                     {v.fields.description && (
-                      <p className="mt-2 line-clamp-3 text-xs text-slate-600">
+                      <p className="mt-3 line-clamp-3 text-xs leading-6 text-slate-600">
                         {v.fields.description}
                       </p>
                     )}
@@ -229,69 +221,37 @@ export default async function HomePage() {
               );
             })}
           </div>
-          <div>
-            <Link
-              href="/service"
-              className="text-sm font-semibold text-primary hover:underline"
-            >
-              車両一覧を見る
-            </Link>
-          </div>
+
+          <Link
+            href="/service"
+            className="inline-flex rounded-full bg-[#1e3d2c] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#2a5240]"
+          >
+            車両一覧を見る
+          </Link>
         </section>
 
-        {/* 採用情報エリア（背景画像版） */}
-        <section
-          className="relative overflow-hidden rounded-3xl px-6 py-10 text-slate-50 md:px-10 md:py-14"
-          style={{
-            backgroundImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)), url(\"/images/recruit-members.jpg\")",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <div className="relative z-10 grid gap-10 md:grid-cols-[3fr,2fr] md:items-center">
-            <div className="space-y-4">
-              <p className="text-xs font-semibold tracking-[0.25em] text-white/80">
-                RECRUIT
+        <section className="overflow-hidden rounded-md bg-[#1e3d2c] px-6 py-10 text-white shadow-sm md:px-10 md:py-14">
+          <div className="grid gap-10 md:grid-cols-[3fr,2fr] md:items-center">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/60">
+                Recruit
               </p>
-              <h2 className="text-2xl font-bold leading-relaxed md:text-3xl">
+              <h2 className="mt-4 max-w-2xl text-2xl font-bold leading-snug [text-wrap:balance] md:text-3xl">
                 一緒に走る仲間を募集しています。
               </h2>
-              <p className="text-sm leading-relaxed text-slate-100 md:text-base">
-                安全運転とチームワークを大切にしながら、地域の物流を支えていく
-                ドライバーやスタッフを募集しています。ご興味をお持ちの方は、
-                ぜひ採用情報をご覧ください。
+              <p className="mt-4 max-w-2xl text-sm leading-8 text-white/75">
+                安全運転とチームワークを大切にしながら、地域の物流を支えていくドライバーやスタッフを募集しています。
               </p>
-
-              <div className="mt-4 flex flex-wrap gap-3 text-xs md:text-sm">
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  大型・ユニックドライバー歓迎
-                </span>
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  道内長距離・近郊輸送あり
-                </span>
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  安定した仕事量
-                </span>
-              </div>
-
-              <div className="mt-6">
-                <Link
-                  href="/recruit"
-                  className="inline-flex items-center gap-3 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-[#006400] shadow-lg shadow-black/40 hover:bg-primary-light"
-                >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#006400] text-white">
-                    →
-                  </span>
-                  <span>採用情報を見る</span>
-                </Link>
-              </div>
+              <Link
+                href="/recruit"
+                className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1e3d2c] transition hover:bg-slate-100"
+              >
+                採用情報を見る
+              </Link>
             </div>
-
-            <div className="relative hidden h-full items-end justify-end md:flex">
+            <div className="hidden justify-end md:flex">
               <span className="pointer-events-none select-none text-5xl font-bold tracking-[0.25em] text-white/15 md:text-7xl">
-                WORK&nbsp;WITH&nbsp;US
+                WORK
               </span>
             </div>
           </div>

@@ -41,41 +41,41 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
     });
 
   return (
-    <div className="pb-16">
-      <div className="mx-auto max-w-3xl px-4 pt-10 space-y-8">
-        {/* パンくず的なリンク */}
+    <div className="bg-[#f5f5f3] pb-20 text-slate-950">
+      <div className="mx-auto max-w-4xl px-4 pt-10 md:px-6 md:pt-14">
         <nav className="text-xs text-slate-500">
-          <Link href="/news" className="hover:underline">
+          <Link href="/news" className="font-semibold hover:underline">
             お知らせ一覧
           </Link>
-          <span className="mx-1">/</span>
-          <span className="text-slate-700 line-clamp-1 align-middle">
+          <span className="mx-2">/</span>
+          <span className="align-middle text-slate-700 line-clamp-1">
             {title}
           </span>
         </nav>
 
-        {/* ヘッダー */}
-        <header className="space-y-3">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
-            {date && <span className="font-semibold">{date}</span>}
-            <span className="inline-flex items-center rounded-full bg-[#006400] px-3 py-1 text-[11px] font-semibold tracking-wide text-white">
+        <header className="mt-8 rounded-md bg-[#1e3d2c] px-6 py-8 text-white shadow-sm md:px-8 md:py-10">
+          <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/60">
+            News Detail
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            {date && <span className="text-xs font-semibold text-white/75">{date}</span>}
+            <span className="rounded-sm bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#1e3d2c]">
               {category}
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+          <h1 className="mt-5 max-w-3xl text-3xl font-bold leading-snug tracking-tight [text-wrap:balance] md:text-4xl">
             {title}
           </h1>
         </header>
 
-        {/* アイキャッチ画像／動画（Airtable hero_image_url 全件、動画優先で表示） */}
         {heroMedia?.length ? (
-          <div className="space-y-4">
+          <section className="mt-8 space-y-4">
             {heroMedia.map((media, index) => {
               const heroUrl = media.url;
               const heroIsVideo = media.type?.startsWith("video/");
 
               return (
-                <div key={`${heroUrl}-${index}`} className="overflow-hidden rounded-xl bg-slate-100">
+                <div key={`${heroUrl}-${index}`} className="overflow-hidden rounded-md bg-white shadow-sm">
                   {heroIsVideo ? (
                     <video
                       src={heroUrl}
@@ -92,51 +92,50 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 </div>
               );
             })}
-          </div>
+          </section>
         ) : null}
 
-        {/* 本文 */}
-        <article className="rounded-xl bg-white p-6 shadow-sm">
+        <article className="mt-8 rounded-md bg-white p-6 shadow-sm md:p-8">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               h1: ({ node, ...props }) => (
                 <h1
-                  className="mt-6 mb-4 text-2xl font-bold text-slate-900 md:text-3xl"
+                  className="mb-4 mt-8 text-2xl font-bold text-slate-900 md:text-3xl"
                   {...props}
                 />
               ),
               h2: ({ node, ...props }) => (
                 <h2
-                  className="mt-6 mb-3 text-xl font-semibold text-slate-900 md:text-2xl"
+                  className="mb-4 mt-8 border-l-4 border-[#1e3d2c] pl-4 text-xl font-bold text-slate-900 md:text-2xl"
                   {...props}
                 />
               ),
               h3: ({ node, ...props }) => (
                 <h3
-                  className="mt-4 mb-2 text-base font-semibold text-[#006400] md:text-lg"
+                  className="mb-3 mt-6 text-base font-bold text-[#1e3d2c] md:text-lg"
                   {...props}
                 />
               ),
               p: ({ node, ...props }) => (
                 <p
-                  className="mb-3 text-sm leading-relaxed text-slate-800 md:text-[0.95rem]"
+                  className="mb-4 text-sm leading-8 text-slate-800 md:text-[0.95rem]"
                   {...props}
                 />
               ),
               ul: ({ node, ...props }) => (
                 <ul
-                  className="mb-3 list-disc pl-5 text-sm leading-relaxed text-slate-800"
+                  className="mb-4 list-disc pl-5 text-sm leading-8 text-slate-800"
                   {...props}
                 />
               ),
               li: ({ node, ...props }) => <li className="my-1" {...props} />,
               strong: ({ node, ...props }) => (
-                <strong className="font-semibold text-[#006400]" {...props} />
+                <strong className="font-bold text-[#1e3d2c]" {...props} />
               ),
               a: ({ node, ...props }) => (
                 <a
-                  className="font-semibold text-primary underline-offset-2 hover:underline"
+                  className="font-bold text-[#1e3d2c] underline-offset-2 hover:underline"
                   {...props}
                 />
               ),

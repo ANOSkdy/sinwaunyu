@@ -73,7 +73,7 @@ export default async function ServicePage() {
               <p className="font-mono text-[11px] uppercase tracking-[0.38em] text-white/65">
                 Hokkaido Logistics Fleet
               </p>
-              <p className="mt-3 max-w-xl text-xl font-bold leading-relaxed md:text-3xl">
+              <p className="mt-3 max-w-3xl text-xl font-bold leading-snug [text-wrap:balance] md:text-3xl">
                 現場に合わせて動ける車両体制が、辰和運輸の対応力です。
               </p>
             </div>
@@ -171,7 +171,7 @@ export default async function ServicePage() {
             <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/55">
               Contact
             </p>
-            <h2 className="text-2xl font-bold">輸送内容に応じた車両をご提案します</h2>
+            <h2 className="max-w-2xl text-2xl font-bold leading-snug [text-wrap:balance]">輸送内容に応じた車両をご提案します</h2>
             <p className="text-sm leading-7 text-white/75">
               建設資材、重機、産業廃棄物など、まずは運搬内容をご相談ください。
             </p>
