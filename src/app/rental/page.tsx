@@ -267,9 +267,6 @@ export default async function RentalPage() {
             <h2 className="mt-3 text-2xl font-bold md:text-3xl">
               保有車両・スペック一覧表
             </h2>
-            <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-600">
-              Airtableの公開中ラインナップを優先表示し、取得できない場合は標準ラインナップを表示します。
-            </p>
           </div>
 
           <div className="mt-6 overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
