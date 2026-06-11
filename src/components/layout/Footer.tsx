@@ -69,6 +69,9 @@ export function Footer() {
             <Link href="/service" className="transition hover:text-white">
               車両紹介
             </Link>
+            <Link href="/rental" className="transition hover:text-white">
+              レンタル
+            </Link>
             <Link href="/news" className="transition hover:text-white">
               お知らせ
             </Link>
