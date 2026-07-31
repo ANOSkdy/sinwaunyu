@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { getLatestNews, getVehicles, getAttachmentUrl } from "@/lib/airtable";
+import { getLatestNews, getVehicles, getAttachmentUrl } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const serviceCards = [
   {

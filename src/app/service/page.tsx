@@ -1,4 +1,7 @@
-import { getVehicles, getAttachmentUrl } from "@/lib/airtable";
+import { getVehicles, getAttachmentUrl } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const fleetHighlights = [
   "一般貨物輸送",

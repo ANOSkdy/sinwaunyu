@@ -1,86 +1,110 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+
+import { submitContact } from "@/lib/content";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const AIRTABLE_API_URL = "https://api.airtable.com/v0";
+const MAX_REQUEST_BYTES = 64 * 1024;
 
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-const AIRTABLE_TABLE_CONTACT =
-  process.env.AIRTABLE_TABLE_CONTACT ?? "contact";
+function textField(
+  body: Record<string, unknown>,
+  name: string,
+  maxLength: number,
+): string | null {
+  const value = body[name];
+  if (value === undefined || value === null) {
+    return "";
+  }
+  if (typeof value !== "string") {
+    return null;
+  }
 
-if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-  console.warn(
-    "[/api/contact] Missing env: AIRTABLE_API_KEY or AIRTABLE_BASE_ID"
-  );
+  const normalized = value.trim();
+  return normalized.length <= maxLength ? normalized : null;
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (contentLength > MAX_REQUEST_BYTES) {
+    return NextResponse.json(
+      { ok: false, error: "リクエストが大きすぎます。" },
+      { status: 413 },
+    );
+  }
+
+  const rawBody = await request.text();
+  if (new TextEncoder().encode(rawBody).byteLength > MAX_REQUEST_BYTES) {
+    return NextResponse.json(
+      { ok: false, error: "リクエストが大きすぎます。" },
+      { status: 413 },
+    );
+  }
+
+  let parsed: unknown;
   try {
-    const body = await req.json();
+    parsed = JSON.parse(rawBody);
+  } catch {
+    parsed = null;
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return NextResponse.json(
+      { ok: false, error: "入力内容を確認してください。" },
+      { status: 400 },
+    );
+  }
 
-    const name = (body.name ?? "").toString().trim();
-    const companyName = (body.companyName ?? "").toString().trim();
-    const email = (body.email ?? "").toString().trim();
-    const tel = (body.tel ?? "").toString().trim();
-    const category = (body.category ?? "other").toString().trim();
-    const subject = (body.subject ?? "").toString().trim();
-    const message = (body.message ?? "").toString().trim();
+  const body = parsed as Record<string, unknown>;
+  const name = textField(body, "name", 200);
+  const companyName = textField(body, "companyName", 200);
+  const email = textField(body, "email", 320);
+  const phone = textField(body, "tel", 50);
+  const category = textField(body, "category", 200);
+  const subject = textField(body, "subject", 300);
+  const message = textField(body, "message", 10_000);
 
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { ok: false, error: "必須項目が入力されていません。" },
-        { status: 400 }
-      );
-    }
+  if (
+    name === null ||
+    companyName === null ||
+    email === null ||
+    phone === null ||
+    category === null ||
+    subject === null ||
+    message === null ||
+    !name ||
+    !email ||
+    !message
+  ) {
+    return NextResponse.json(
+      { ok: false, error: "必須項目が入力されていません。" },
+      { status: 400 },
+    );
+  }
 
-    if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-      return NextResponse.json(
-        { ok: false, error: "サーバー設定が不足しています。" },
-        { status: 500 }
-      );
-    }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json(
+      { ok: false, error: "メールアドレスを確認してください。" },
+      { status: 400 },
+    );
+  }
 
-    const url = `${AIRTABLE_API_URL}/${AIRTABLE_BASE_ID}/${encodeURIComponent(
-      AIRTABLE_TABLE_CONTACT
-    )}`;
-
-    const airtableRes = await fetch(url, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fields: {
-          name,
-          company_name: companyName || undefined,
-          email,
-          tel: tel || undefined,
-          category,
-          subject: subject || undefined,
-          message,
-          received_at: new Date().toISOString(),
-          status: "new",
-        },
-      }),
+  try {
+    await submitContact({
+      name,
+      companyName,
+      email,
+      phone,
+      category: category || "other",
+      subject,
+      message,
     });
 
-    if (!airtableRes.ok) {
-      const text = await airtableRes.text();
-      console.error("[/api/contact] Airtable error:", text);
-      return NextResponse.json(
-        { ok: false, error: "お問い合わせの送信に失敗しました。" },
-        { status: 500 }
-      );
-    }
-
     return NextResponse.json({ ok: true });
-  } catch (e) {
-    console.error("[/api/contact] Unexpected error:", e);
+  } catch {
+    console.error("[api/contact] Contact submission failed.");
     return NextResponse.json(
-      { ok: false, error: "サーバー側でエラーが発生しました。" },
-      { status: 500 }
+      { ok: false, error: "お問い合わせの送信に失敗しました。" },
+      { status: 500 },
     );
   }
 }
