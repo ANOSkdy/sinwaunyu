@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getRentalForklifts } from "@/lib/airtable";
-import type { RentalForkliftFields } from "@/lib/airtable";
+import { getRentalForklifts } from "@/lib/content";
+import type { RentalForkliftFields } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "フォークリフトレンタル | 株式会社辰和運輸",
@@ -15,58 +18,6 @@ type RentalForklift = Required<
     "maker" | "capacity" | "power" | "fork_length" | "usage"
   >
 >;
-
-const fallbackForklifts: RentalForklift[] = [
-  {
-    maker: "コマツ",
-    capacity: "6.0t",
-    power: "ディーゼル",
-    fork_length: "標準爪 ＋ サヤ200cm",
-    usage: "鋼材・木材（原木）・コンクリート・重量物",
-  },
-  {
-    maker: "コマツ",
-    capacity: "2.5t",
-    power: "ディーゼル（4台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "資材置場・産廃・解体・屋外のあらゆる現場",
-  },
-  {
-    maker: "三菱",
-    capacity: "2.5t",
-    power: "ディーゼル（1台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "建材・地場産業・屋外作業",
-  },
-  {
-    maker: "ユニキャリア",
-    capacity: "2.5t",
-    power: "ディーゼル（1台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "鉄工所・仮設資材・引越し現場",
-  },
-  {
-    maker: "コマツ",
-    capacity: "2.5t",
-    power: "ガソリン（1台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "倉庫内・排気を抑えたい半屋外",
-  },
-  {
-    maker: "三菱",
-    capacity: "1.5t",
-    power: "ディーゼル（1台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "狭い現場・小回りの必要な資材移動",
-  },
-  {
-    maker: "コマツ",
-    capacity: "2.5t",
-    power: "バッテリー（1台）",
-    fork_length: "標準爪 ＋ サヤ170cm",
-    usage: "食品工場・水産加工・農産物倉庫（屋内専用）",
-  },
-];
 
 const rentalReasons = [
   {
@@ -141,51 +92,29 @@ function getRentalField(
   return stringifyFieldValue(entry?.[1]);
 }
 
-function normalizeForklift(
-  fields: RentalForkliftFields,
-  fallback?: RentalForklift,
-): RentalForklift {
+function normalizeForklift(fields: RentalForkliftFields): RentalForklift {
   return {
     maker:
-      getRentalField(fields, "maker") ?? fallback?.maker ?? "メーカー確認中",
+      getRentalField(fields, "maker") ?? "メーカー確認中",
     capacity:
-      getRentalField(fields, "capacity") ?? fallback?.capacity ?? "容量確認中",
-    power: getRentalField(fields, "power") ?? fallback?.power ?? "動力確認中",
+      getRentalField(fields, "capacity") ?? "容量確認中",
+    power: getRentalField(fields, "power") ?? "動力確認中",
     fork_length:
       getRentalField(fields, "fork_length") ??
-      fallback?.fork_length ??
       "爪・サヤ仕様確認中",
     usage:
       getRentalField(fields, "usage") ??
-      fallback?.usage ??
       "用途はお問い合わせください",
   };
 }
 
-async function getDisplayForklifts(): Promise<{
-  forklifts: RentalForklift[];
-  isFallback: boolean;
-}> {
-  try {
-    const records = await getRentalForklifts(20);
-
-    if (records.length === 0) {
-      return { forklifts: fallbackForklifts, isFallback: true };
-    }
-
-    return {
-      forklifts: records.map((record, index) =>
-        normalizeForklift(record.fields, fallbackForklifts[index]),
-      ),
-      isFallback: false,
-    };
-  } catch {
-    return { forklifts: fallbackForklifts, isFallback: true };
-  }
+async function getDisplayForklifts(): Promise<RentalForklift[]> {
+  const records = await getRentalForklifts(20);
+  return records.map((record) => normalizeForklift(record.fields));
 }
 
 export default async function RentalPage() {
-  const { forklifts, isFallback } = await getDisplayForklifts();
+  const forklifts = await getDisplayForklifts();
 
   return (
     <div className="bg-[#f5f5f3] pb-20 text-slate-950">
@@ -327,11 +256,6 @@ export default async function RentalPage() {
               ))}
             </div>
           </div>
-          {isFallback && (
-            <p className="mt-3 rounded-md bg-amber-50 px-4 py-3 text-xs leading-6 text-amber-900 ring-1 ring-amber-200">
-              最新の在庫情報を確認中のため、標準ラインナップを表示しています。詳しい空き状況はお問い合わせください。
-            </p>
-          )}
         </section>
 
         <section className="mt-14">

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getRecruitBySlug } from "@/lib/airtable";
+import { getRecruitBySlug } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type RecruitDetailPageProps = {
   params: Promise<{ slug: string }>;

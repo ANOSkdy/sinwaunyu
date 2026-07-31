@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { getAllNews } from "@/lib/airtable";
+import { getAllNews } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export default async function NewsPage() {
   const news = await getAllNews();

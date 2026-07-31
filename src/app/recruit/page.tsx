@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { getActiveRecruitPositions } from "@/lib/airtable";
+import { getActiveRecruitPositions } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const recruitHighlights = ["安全第一", "地域密着", "資格を活かせる", "チームで支える運行"];
 

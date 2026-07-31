@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { getCompanyProfile } from "@/lib/airtable";
+import { getCompanyProfile } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const serviceCards = [
   {

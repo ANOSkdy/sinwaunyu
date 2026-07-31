@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { getNewsBySlug } from "@/lib/airtable";
+import { getNewsBySlug } from "@/lib/content";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type NewsDetailPageProps = {
   params: Promise<{ slug: string }>;
